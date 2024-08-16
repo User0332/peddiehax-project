@@ -12,7 +12,7 @@ sys.path.append(
 
 app = App(__name__, template_folder="html")
 
-db = app.sqlalchemy.init("sqlite:///./db/local.db")
+db = app.sqlalchemy.init("sqlite:///db/database.db")
 
 def webpy_setup(app: App):
 	app.debug = True
