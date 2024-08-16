@@ -11,3 +11,23 @@ async function getAuthInfo() {
 (async () => { // onload
 	if (!await getAuthInfo()) location.href = authUrl;
 })()
+
+function execWithUserData(func) {
+	getAuthInfo().then(
+		authInfo => fetch(
+			"/api/getself", {
+				"headers": {
+					Authorization: `Bearer ${authInfo.accessToken}`
+				}
+			}
+		)
+	).then(
+		res => res.json()
+	).then(
+		userData => { // main function for page
+			if (!userData) location.href = "/finalize-account"
+
+			func(userData)
+		}
+	)
+}

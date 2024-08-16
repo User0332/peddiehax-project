@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>whoami</title>
+		<title>Create Account</title>
 
 		<script 
 			src="https://www.unpkg.com/@propelauth/javascript@2.0.11/dist/javascript.min.js" 
@@ -13,24 +13,22 @@
 	</head>
 
 	<body>
-		<script>			
+		<script>
 			getAuthInfo().then(
-				authInfo => {
-					fetch(
-						"/api/whoami", {
-							"headers": {
-								Authorization: `Bearer ${authInfo.accessToken}`
-							}
+				authInfo => fetch(
+					"/api/getself", {
+						"headers": {
+							Authorization: `Bearer ${authInfo.accessToken}`
 						}
-					).then(
-						res => res.text()
-					).then(
-						text => console.log(text)
-					)
+					}
+				)
+			).then(
+				res => res.json()
+			).then(
+				userData => { // main function for page
+					if (userData) location.href = "/dashboard" // disallow multiple-time account creation
 				}
-			)
-
-			
+			)	
 		</script>
 	</body>
 </html>

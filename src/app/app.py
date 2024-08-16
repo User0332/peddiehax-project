@@ -1,4 +1,5 @@
 import secrets
+from flask import jsonify
 from webpy import App
 from propelauth_flask import init_auth, current_user
 from propelauth_flask.user import LoggedInUser
@@ -57,8 +58,25 @@ class TripEntry(db.Model):
 	added_at = db.Column(db.DateTime, nullable=False)
 	parent_journey = db.Column(db.String, nullable=False)
 
-# WebPy design requires that all specially-decorated functions (such as the following with require_user)
-# must be defined in app.py rather that root/
+# WebPy design requires that all specially-decorated functions
+# (such as the following with require_user) be defined in app.py rather that root/
+
+@app.route("/api/getself")
+@auth.require_user
+def getself():
+	user = db.session.execute(
+		db.select(User).where(User.id == current_user.user_id)
+	).scalar()
+
+	if not user: return jsonify(None)
+
+	return jsonify(
+		{
+			"username": user.username,
+			"id": user.id,
+			"journeys": user.journeys.split(',')
+		}
+	)
 
 @app.route("/api/whoami")
 @auth.require_user
