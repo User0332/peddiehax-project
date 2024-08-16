@@ -9,6 +9,7 @@
 		- `people`, `string` - Comma-separated list of people who were there EXCLUDING the author/poster
 		- `description`, `string` - User-added description
 		- `rating`, `stringified integer, 1-5`, - Rating
+		- `journey`, `string` - Journey ID of the journey to add this entry to
 
 		- File data - photos (png, jpg, or jpeg), **maximum 3 files**
 

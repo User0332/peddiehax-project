@@ -31,8 +31,6 @@ def init_propelauth(app: App):
 
 sys.path.insert(0, '.')
 
-app = App(__name__, template_folder="html", root_path=os.path.abspath('.'))
-
 auth = init_propelauth(app)
 
 def webpy_setup(app: App):
@@ -56,6 +54,7 @@ class TripEntry(db.Model):
 	people = db.Column(db.String, nullable=False)
 	description = db.Column(db.String, nullable=False)
 	rating = db.Column(db.Integer, nullable=False)
+	added_at = db.Column(db.DateTime, nullable=False)
 	parent_journey = db.Column(db.String, nullable=False)
 
 # WebPy design requires that all specially-decorated functions (such as the following with require_user)
