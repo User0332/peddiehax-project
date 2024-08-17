@@ -26,8 +26,10 @@ response = map_client.places_nearby(
 print(response.get("status"))
 
 
-place_list.extend(response.get('results'))
-
+place_list.extend(response["results"])
 
 for place in place_list:
-    print(place.get('name'))
+    print(
+        (place["geometry"]["location"]["lat"], place["geometry"]["location"]["lng"]),
+        place.get('name')
+    )

@@ -32,7 +32,7 @@
 	- Get a list of journey IDs, ordered from newest to oldest
 
 	- CLIENT sends no data
-	- SERVER returns JSON list of string IDs, ordered from newest to oldest
+	- SERVER returns JSON list of string IDs, ordered from oldest to newest
 
 
 	- Example
@@ -42,14 +42,43 @@
 - GET /api/getjourney
 	- Get Journey Data for specified journey ID
 
+	- CLIENT sends URL arg `id` containing journey ID
+	- SERVER responds with JSON object containing
+		- `id` -> `string`, the journey ID
+		- `name` -> `string`, the journey name
+		- `entries` -> `array<string>`, the entry IDs associated with the journey
+
+- POST /api/createjourney
+	- Create a journey under the current user
+	
+	- CLIENT sends form data containing the following
+		- `name`, `string` - Name of journey
+	
+	- SERVER responds with JSON string of new journey ID or null on failure
+
 - GET /api/getphoto
 	- Get photo by photo ID
 
 	- CLIENT sends: URL arg `id=<id>`
 		- Where `id` is the photo id
 	- SERVER returns: JSON string of base64 representing the requested photo
+		- SERVER returns `null` on failure
 	
 
 	- Example
 		- CLIENT sends request `GET /api/getphoto?id=9cukjW8ZiXK4XOfiRHdBAA`
 		- SERVER returns `"some long base64 string of photo data"`
+
+- GET /api/getentry
+	- Get Entry Data for specified entry ID
+
+	- CLIENT sends URL arg `id` containing entry ID
+	- SERVER responds with JSON object containing
+		- `id` -> `string`, the entry ID
+		- `name` -> `string`, the entry location name
+		- `location` -> `string`, the `lat,lng` location of the entry
+		- `description` -> `string`, the entry description
+		- `rating` -> `integer`, the 1-5 rating of the entry
+		- `images` -> `array<string>`, the list of image IDs associated with the entry
+		- `people` -> `array<string>`, the list of people associated with the entry
+		- `timestamp` -> `Date`, the time when the entry was created
