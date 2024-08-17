@@ -3,7 +3,6 @@ import random
 import secrets
 import base64
 import time
-from tkinter import Entry
 import googlemaps
 from flask import Response, jsonify, request
 from webpy import App
@@ -309,7 +308,7 @@ def get_nearby_places():
 	except (IndexError, ValueError):
 		return jsonify(None)
 		
-	SEARCH_RADIUS_METERS = 80
+	SEARCH_RADIUS_METERS = 50
 
 	results: list[dict] = []
 
@@ -432,7 +431,7 @@ def getplotdata():
 	for entry_id in entries:
 		path.append(
 			db.session.execute(
-				db.select(Entry).where(Entry.id == entry_id)
+				db.select(TripEntry).where(TripEntry.id == entry_id)
 			).scalar().name
 		)
 

@@ -19,80 +19,103 @@
 	</head>
 
 	<body>
-		<script>
-			const journeyID = new URLSearchParams(location.search).get("id")
+		<div id="wrapper">
+			<script>
+				const journeyID = new URLSearchParams(location.search).get("id")
+				
+				const embedOnlyAPIKey = "AIzaSyAUYcXxRzR-nyBkX4FNYLUSbNmE0-rDDXE";
 
-			let globalAuthInfo;
+				let globalAuthInfo;
 
-			execWithUserData(async (userData, authInfo) => { // main function for page
-				globalAuthInfo = authInfo;
+				execWithUserData(async (userData, authInfo) => { // main function for page
+					globalAuthInfo = authInfo;
 
-				const journeyInfo = await getJourneyInfo(journeyID, authInfo)
+					const journeyInfo = await getJourneyInfo(journeyID, authInfo)
 
-				const journeyMessage = document.createElement("h2")
-			
-				const greeting = document.createElement("h1")
+					const journeyMessage = document.createElement("h2")
+				
+					const greeting = document.createElement("h1")
 
-				greeting.textContent = `Hey, ${authInfo.user.firstName}`;
+					greeting.textContent = `Hey, ${authInfo.user.firstName}`;
 
-				document.body.prepend(
-					greeting,
-					journeyMessage
-				);
-
-				const entriesContainer = document.getElementById("entries-container");
-
-				let totalRatingPts = 0;
-
-				for (const entryID of journeyInfo.entries) {
-					const entryInfo = await getEntryInfo(entryID, authInfo);
-
-					const entrySummaryContainer = document.createElement("div");
-					
-					entrySummaryContainer.className = "entry-summary"
-
-					entrySummaryContainer.append(
-						textElement("h2", entryInfo.name)
+					document.body.prepend(
+						greeting,
+						journeyMessage
 					);
 
-					if (entryInfo.people) entrySummaryContainer.append(
-						textElement("h3", `With ${entryInfo.people.join(", ")}`)
-					)
+					const entriesContainer = document.getElementById("entries-container");
 
-					entrySummaryContainer.append(
-						textElement('p', entryInfo.description)
-					);
+					let totalRatingPts = 0;
 
-					entrySummaryContainer.append(
-						textElement("h3", `You rated: ${entryInfo.rating} \u2605`)
-					);
-					var a = document.createElement('a')
-					a.href = `/view-entry?entryID=${entryID}`;
+					for (const entryID of journeyInfo.entries) {
+						const entryInfo = await getEntryInfo(entryID, authInfo);
+
+						const entrySummaryContainer = document.createElement("div");
+						
+						entrySummaryContainer.className = "entry-summary";
+
+						const nameAnchor = document.createElement('A');
+
+						nameAnchor.append(textElement("h2", entryInfo.name));
+						nameAnchor.href = `/view-entry?entryID=${entryID}`;
+						nameAnchor.className = "anchor-btn";
+
+						entrySummaryContainer.append(
+							nameAnchor
+						);
+
+						if (entryInfo.people.length > 0) entrySummaryContainer.append(
+							textElement("h3", `With ${entryInfo.people.join(", ")}`)
+						);
+
+						entrySummaryContainer.append(
+							textElement('p', entryInfo.description)
+						);
+
+						entrySummaryContainer.append(
+							textElement("h3", `You rated: ${entryInfo.rating} \u2605`)
+						);
+
 		
-					a.text = "view imgs"
+						entriesContainer.append(entrySummaryContainer);
 
-					entrySummaryContainer.append(a)
+						totalRatingPts+=entryInfo.rating;
+					}
 
-					entriesContainer.append(entrySummaryContainer);
+					let overallRating = (totalRatingPts/journeyInfo.entries.length).toFixed(1);
 
-					totalRatingPts+=entryInfo.rating;
-				}
+					if (overallRating == "NaN") overallRating = "?"
 
-				let overallRating = (totalRatingPts/journeyInfo.entries.length).toFixed(1);
+					journeyMessage.textContent = `Welcome to your journey "${journeyInfo.name}" (${overallRating} \u2605)`
 
-				if (overallRating == "NaN") overallRating = "?"
 
-				journeyMessage.textContent = `Welcome to your journey "${journeyInfo.name}" (${overallRating} \u2605)`
-			})
-		</script>
+					// Plot journey via maps embed API
 
-		<div id="entries-container">
+					const plotData = await getPlotInfo(journeyID, authInfo);
 
+					const embed = document.getElementById("journey-plot");
+
+					embed.src = `https://www.google.com/maps/embed/v1/directions?key=${embedOnlyAPIKey}&origin=${plotData.src}&destination=${plotData.dst}&mode=walking`;
+					
+					if (plotData.waypoints.length > 0) embed.src+=`&waypoints=${plotData.waypoints.join('|')}`;
+				})
+			</script>
+
+			<div id="entries-container">
+
+			</div>
+
+			<div id="journey-plot-container">
+				<iframe
+					id="journey-plot"
+					width="400"
+					height="400"
+					referrerpolicy="no-referrer-when-downgrade"
+					allowfullscreen>
+				</iframe>
+			</div>
+
+			<a href="" onclick="location.href = `/new-entry?journeyID=${journeyID}`; return false" class="anchor-btn" id="new-entry-btn">Add a New Entry &#x2192;</a>
 		</div>
-
-
-
-		<a href="" onclick="location.href = `/new-entry?journeyID=${journeyID}`; return false" class="anchor-btn" id="new-entry-btn">Add a New Entry &#x2192;</a>
-
 	</body>
 </html>

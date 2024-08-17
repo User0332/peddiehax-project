@@ -19,162 +19,163 @@
 	</head>
 
 	<body>
-		<script>
-			const journeyID = new URLSearchParams(location.search).get("journeyID")
+		<div id="wrapper">
+			<script>
+				const journeyID = new URLSearchParams(location.search).get("journeyID")
 
-			let globalAuthInfo;
+				let globalAuthInfo;
 
-			execWithUserData(async (userData, authInfo) => { // main function for page
-				globalAuthInfo = authInfo;
+				execWithUserData(async (userData, authInfo) => { // main function for page
+					globalAuthInfo = authInfo;
 
-				const journeyInfo = await getJourneyInfo(journeyID, authInfo)
-				
-				navigator.geolocation.getCurrentPosition((pos) => {
-					const loc = `${pos.coords.latitude},${pos.coords.longitude}`;
-
-					const locSelectElement = document.getElementById("loc-select");
+					const journeyInfo = await getJourneyInfo(journeyID, authInfo)
 					
-					getNearbyLocations(loc, authInfo).then((nearbyLocations) => {
-						for (const [locationName, coords] of Object.entries(nearbyLocations)) {
-							const option = textElement("option", locationName);
-							option.value = coords;
+					navigator.geolocation.getCurrentPosition((pos) => {
+						const loc = `${pos.coords.latitude},${pos.coords.longitude}`;
 
-							locSelectElement.append(option);
-						}
-					});
-				}, () => {
-					alert("Could not determine location!");
-					return;
+						const locSelectElement = document.getElementById("loc-select");
+						
+						getNearbyLocations(loc, authInfo).then((nearbyLocations) => {
+							for (const [locationName, coords] of Object.entries(nearbyLocations)) {
+								const option = textElement("option", locationName);
+								option.value = coords;
+
+								locSelectElement.append(option);
+							}
+						});
+					}, () => {
+						alert("Could not determine location!");
+						return;
+					})
+
+					const message = document.createElement("h2")
+					message.textContent = `Add an entry to your journey "${journeyInfo.name}"`
+				
+					const greeting = document.createElement("h1")
+
+					greeting.textContent = `Hey, ${authInfo.user.firstName}`
+
+					document.body.prepend(
+						greeting,
+						message
+					);
 				})
 
-				const message = document.createElement("h2")
-				message.textContent = `Add an entry to your journey "${journeyInfo.name}"`
-			
-				const greeting = document.createElement("h1")
+				function submitEntry() {
+					const locationInput = document.getElementById("loc-select");
+					const locationName = locationInput.options[locationInput.selectedIndex].text;
 
-				greeting.textContent = `Hey, ${authInfo.user.firstName}`
-
-				document.body.prepend(
-					greeting,
-					message
-				);
-			})
-
-			function submitEntry() {
-				const locationInput = document.getElementById("loc-select");
-				const locationName = locationInput.options[locationInput.selectedIndex].text;
-
-				if (!locationName) {
-					alert("Please select a location!");
-					return;
-				}
-
-				const locationCoords = locationInput.value;
-
-				let description = document.getElementById("description").value;
-				
-				if (!description) {
-					description = "No description provided.";
-				}
-
-				const rating = parseInt(document.getElementById("rating-inp").value);
-
-				console.log(rating)
-
-				if (Number.isNaN(rating) || (rating < 0) || (rating > 5)) {
-					alert("Please enter a valid rating from 1-5!");
-					return;
-				}
-
-				let peopleString = "";
-
-				for (const element of document.getElementById("personContainer").children) {
-					if (element.value) {
-						peopleString+=`${element.value},`
+					if (!locationName) {
+						alert("Please select a location!");
+						return;
 					}
+
+					const locationCoords = locationInput.value;
+
+					let description = document.getElementById("description").value;
+					
+					if (!description) {
+						description = "No description provided.";
+					}
+
+					const rating = parseInt(document.getElementById("rating-inp").value);
+
+					console.log(rating)
+
+					if (Number.isNaN(rating) || (rating < 0) || (rating > 5)) {
+						alert("Please enter a valid rating from 1-5!");
+						return;
+					}
+
+					let peopleString = "";
+
+					for (const element of document.getElementById("personContainer").children) {
+						if (element.value) {
+							peopleString+=`${element.value},`
+						}
+					}
+
+					const files = document.getElementById("image-input").files;
+
+					const formData = new FormData();
+
+					formData.append("name", locationName);
+					formData.append("loc", locationCoords);
+					formData.append("people", peopleString);
+					formData.append("description", description);
+					formData.append("rating", rating.toString());
+					formData.append("journey", journeyID);
+					
+					for (const file of files) {
+						formData.append("images", file);
+					}
+
+					fetch("/api/addentry", {
+						method: "POST",
+						headers: {
+							Authorization: `Bearer ${globalAuthInfo.accessToken}`
+						},
+						body: formData
+					}).then(() => location.href = `/view-journey?id=${journeyID}`);
+
 				}
 
-				const files = document.getElementById("image-input").files;
+				function addPerson() {
+					const personDiv = document.getElementById("personContainer");
 
-				const formData = new FormData();
+					const lineBreak = document.createElement("br");
+					const inputElem = document.createElement("input");
 
-				formData.append("name", locationName);
-				formData.append("loc", locationCoords);
-				formData.append("people", peopleString);
-				formData.append("description", description);
-				formData.append("rating", rating.toString());
-				formData.append("journey", journeyID);
+					inputElem.placeholder = "Who were you with?"
+					
+					const removeBtn = document.createElement("button");
+					removeBtn.textContent = "Remove";
+
+					removeBtn.onclick = () => {
+						inputElem.remove();
+						removeBtn.remove();
+						lineBreak.remove();
+					}
+
+					personDiv.append(inputElem, removeBtn, lineBreak);
+				}
+
+				function validateImages() {
+					const imgInput = document.getElementById("image-input");
+					if (imgInput.files.length > 3) alert("You may not upload more than 3 files!")
+				}
+			</script>
+
+			<div id="entryData">
+				<select id="loc-select" placeholder="Location Name">
+				</select>
 				
-				for (const file of files) {
-					formData.append("images", file);
-				}
-
-				fetch("/api/addentry", {
-					method: "POST",
-					headers: {
-						Authorization: `Bearer ${globalAuthInfo.accessToken}`
-					},
-					body: formData
-				}).then(() => location.href = `/view-journey?id=${journeyID}`);
-
-			}
-
-			function addPerson() {
-				const personDiv = document.getElementById("personContainer");
-
-				const lineBreak = document.createElement("br");
-				const inputElem = document.createElement("input");
-
-				inputElem.placeholder = "Who were you with?"
+				<br/>
 				
-				const removeBtn = document.createElement("button");
-				removeBtn.textContent = "Remove";
+				<textarea id="description"></textarea>
+				<br/>
 
-				removeBtn.onclick = () => {
-					inputElem.remove();
-					removeBtn.remove();
-					lineBreak.remove();
-				}
+				<input type="number" id="rating-inp" placeholder="Rating"/>
+				<br/>
 
-				personDiv.append(inputElem, removeBtn, lineBreak);
-			}
+				<div id="personContainer"></div>
 
-			function validateImages() {
-				const imgInput = document.getElementById("image-input");
-				if (imgInput.files.length > 3) alert("You may not upload more than 3 files!")
-			}
-		</script>
+				<button onclick="addPerson()">Add Person</button>
+				<br/>
 
-		<div id="entryData">
-			<select id="loc-select" placeholder="Location Name">
-			</select>
-			
-			<br/>
-			
-			<textarea id="description"></textarea>
-			<br/>
+				<input
+					type="file" 
+					id="image-input" 
+					name="images" 
+					accept=".png, .jpg, .jpeg" 
+					multiple 
+					onchange="validateImages()">
+				<br/>
 
-			<input type="number" id="rating-inp" placeholder="Rating"/>
-			<br/>
+				<button onclick="submitEntry()">Create Entry</button>
+			</div>
 
-			<div id="personContainer"></div>
-
-			<button onclick="addPerson()">Add Person</button>
-			<br/>
-
-			<input
-				type="file" 
-				id="image-input" 
-				name="images" 
-				accept=".png, .jpg, .jpeg" 
-				multiple 
-				onchange="validateImages()">
-			<br/>
-
-			<button onclick="submitEntry()">Create Entry</button>
+			<a href="" onclick="location.href = `/view-journey?id=${journeyID}`; return false" class="anchor-btn" id="new-entry-btn">Back to Your Journey &#x2192;</a>
 		</div>
-
-		<a href="" onclick="location.href = `/view-journey?id=${journeyID}`; return false" class="anchor-btn" id="new-entry-btn">Back to Your Journey &#x2192;</a>
-
 	</body>
 </html>

@@ -9,6 +9,10 @@ function makeAPICall(endpoint, authInfo, body) {
 	})
 }
 
+async function getPlotInfo(journeyID, authInfo) {
+	return await (await makeAPICall(`/api/getplotdata?id=${journeyID}`, authInfo)).json()
+}
+
 async function getEntryInfo(entryID, authInfo) {
 	return await (await makeAPICall(`/api/getentry?id=${entryID}`, authInfo)).json()
 }

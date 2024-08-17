@@ -16,42 +16,44 @@
 	</head>
 
 	<body>
-		<script>
-			let globalAuthInfo;
+		<div id="wrapper">
+			<script>
+				let globalAuthInfo;
 
-			execWithUserData(async (userData, authInfo) => { // main function for page
-				globalAuthInfo = authInfo;
+				execWithUserData(async (userData, authInfo) => { // main function for page
+					globalAuthInfo = authInfo;
 
-				const message = document.createElement("h2")
-				message.textContent = "Let's start a journey"
-			
-				const greeting = document.createElement("h1")
+					const message = document.createElement("h2")
+					message.textContent = "Let's start a journey"
+				
+					const greeting = document.createElement("h1")
 
-				greeting.textContent = `Hey, ${authInfo.user.firstName}`
+					greeting.textContent = `Hey, ${authInfo.user.firstName}`
 
-				document.body.prepend(
-					greeting,
-					message
-				);
-			})
+					document.body.prepend(
+						greeting,
+						message
+					);
+				})
 
-			function newJourney() {
-				const journeyName = document.getElementById("journeyName").value;
+				function newJourney() {
+					const journeyName = document.getElementById("journeyName").value;
 
-				if (!journeyName) {
-					alert("Please specify a journey name!")
-					return
+					if (!journeyName) {
+						alert("Please specify a journey name!")
+						return
+					}
+
+					createJourney(journeyName, globalAuthInfo).then(
+						journeyID => location.href = `/view-journey?id=${journeyID}`
+					)
 				}
+			</script>
 
-				createJourney(journeyName, globalAuthInfo).then(
-					journeyID => location.href = `/view-journey?id=${journeyID}`
-				)
-			}
-		</script>
+			<h3>Journey Name: </h3>
+			<input type="text" id="journeyName"/>
 
-		<h3>Journey Name: </h3>
-		<input type="text" id="journeyName"/>
-
-		<button onclick="newJourney()">Create</button>
+			<button onclick="newJourney()">Create</button>
+		</div>
 	</body>
 </html>
