@@ -214,7 +214,14 @@ def getphoto():
 		(not photo.accessible_to_current_user)
 	): return jsonify(None)
 
-	return jsonify(photo.to_base64())
+	header = photo.data[8:]
+
+	if header[:8] == b'\x89PNG\r\n\x1a\n':
+		ftype = "png"
+	elif header[:3] == b'\xff\xd8\xff':
+		ftype = "jpeg"
+
+	return jsonify(f"data:image/{ftype};base64,{photo.to_base64()}")
 
 @app.route("/api/addentry", methods=["POST"])
 @auth.require_user
