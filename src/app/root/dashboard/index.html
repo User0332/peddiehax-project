@@ -35,9 +35,12 @@
 				
 					const journeyDiv = document.createElement("div");
 
+
 					journeyDiv.className = "journey-summary";
 
 					const anchor = document.createElement('a');
+
+
 
 					anchor.appendChild(textElement("h3", journeyInfo.name));
 					anchor.href = `/view-journey?id=${journeyID}`;
@@ -46,6 +49,9 @@
 					journeyDiv.appendChild(
 						anchor
 					);
+
+					journeyDiv.onclick = () => anchor.click();
+
 
 					if (journeyInfo.entries.length > 1)
 					{

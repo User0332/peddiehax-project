@@ -47,6 +47,9 @@
 						anchor
 					);
 
+					journeyDiv.onclick = () => anchor.click();
+
+
 					if (journeyInfo.entries.length > 1)
 					{
 						const firstEntryID = journeyInfo.entries[0]

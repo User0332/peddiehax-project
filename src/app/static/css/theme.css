@@ -5,7 +5,7 @@ body {
 .anchor-btn {
 	position: relative;
 	display: inline-block;
-	color: #208AAE;
+	color: #0cc2ff;
 	text-decoration: none;
 	padding: 5px 0;
 	font-weight: bold;
@@ -44,9 +44,12 @@ body {
 	align-items: center;
 	padding-bottom: 1vh;
 	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
+	bottom: 20px;
+	left: 10px;
+	right: 10px;
+	border-radius: 25px;
+
+	background-color: rgb(155, 155, 155);
 }
 
 .light-anchor-style {

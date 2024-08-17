@@ -13,4 +13,17 @@
 	color: white;
 
 	margin-bottom: 1vh;
+
+	
+}
+
+#entries-container{
+
+	height: 900px;
+
+	padding-top: 1vh;
+	padding-bottom: 1vh;
+
+	overflow-y:auto;
+
 }
