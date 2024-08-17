@@ -28,7 +28,9 @@ function loadNavbar() {
 	logout.onclick = () => {
 		authClient.logout().then(
 			() => location.href = '/'
-		)
+		);
+
+		return false;
 	}
 
 	navbar.appendChild(logout);
