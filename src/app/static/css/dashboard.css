@@ -1,28 +1,46 @@
 .journey-summary {
 	border-radius: 10px;
-	padding-top: 0.5vh;
-	padding-bottom: 0.5vh;
-	padding-left: 0.5vw;
-	padding-right: 0.5vw;
-	width: 60vw;
-	background-color: #208AAE;
-	color: white;
-
-	margin-bottom: 1vh;
+	width: 50%;
+	height: 26%;
+	background-color: white;
+	color: black;
 
 	cursor: pointer;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-#myJourneys {
-	padding-top: 0.5vh;
-	padding-bottom: 0.5vh;
-	padding-left: 0.5vw;
-	padding-right: 0.5vw;
-	width: 80vw;
+#my-journeys {
+	width: 80%;
+	height: 80%;
 	border-radius: 10px;
-	background-color: #0EFEBA;
+	background-color: white;
+
+	display: flex;
+	/* justify-content: center; */
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
 }
 
 #start-journey-btn {
 	font-size: 2vh;
+}
+
+#dashboard-heading {
+	background: linear-gradient(to right, #93cdff, #74bcfc, #5ca9ec, #4ca0e9, #4794d8, #3179ee, #2072f7);;
+
+	border-radius: 10px;
+
+	color: white;
+
+	padding-top: 1%;
+	padding-bottom: 1%;
+
+	padding-left: 5%;
+	padding-right: 5%;
 }

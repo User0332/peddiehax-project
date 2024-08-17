@@ -28,6 +28,8 @@
 				execWithUserData(async (userData, authInfo) => { // main function for page
 					globalAuthInfo = authInfo;
 
+					const wrapper = document.getElementById("wrapper");
+
 					const journeyInfo = await getJourneyInfo(journeyID, authInfo)
 					
 					navigator.geolocation.getCurrentPosition((pos) => {
@@ -55,7 +57,7 @@
 
 					greeting.textContent = `Hey, ${authInfo.user.firstName}`
 
-					document.body.prepend(
+					wrapper.prepend(
 						greeting,
 						message
 					);

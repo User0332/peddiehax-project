@@ -22,7 +22,9 @@
 		<div id="wrapper">
 			<script>
 				execWithUserData(async (userData, authInfo) => { // main function for page
-					document.body.prepend(
+					const wrapper = document.getElementById("wrapper");
+
+					wrapper.prepend(
 						textElement("h1", `Hello, ${authInfo.user.firstName}!`)
 					)
 

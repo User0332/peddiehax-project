@@ -10,7 +10,7 @@
 			crossorigin="anonymous"></script>
 		<script src="/static/js/authuser.js"></script>
 		<script src="/static/js/api.js"></script>
-		<script src="/static/js/navbar.js" defer></script>
+		<!-- <script src="/static/js/navbar.js" defer></script> -->
 
 		<link rel="stylesheet" href="/static/css/theme.css"/>
 	</head>
@@ -23,6 +23,8 @@
 				execWithUserData(async (userData, authInfo) => { // main function for page
 					globalAuthInfo = authInfo;
 
+					const wrapper = document.getElementById("wrapper");
+
 					const message = document.createElement("h2")
 					message.textContent = "Let's start a journey"
 				
@@ -30,7 +32,7 @@
 
 					greeting.textContent = `Hey, ${authInfo.user.firstName}`
 
-					document.body.prepend(
+					wrapper.prepend(
 						greeting,
 						message
 					);
