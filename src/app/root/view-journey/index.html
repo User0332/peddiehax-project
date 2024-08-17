@@ -55,7 +55,7 @@
 						textElement("h2", entryInfo.name)
 					);
 
-					entrySummaryContainer.append(
+					if (entryInfo.people) entrySummaryContainer.append(
 						textElement("h3", `With ${entryInfo.people.join(", ")}`)
 					)
 
@@ -72,7 +72,11 @@
 					totalRatingPts+=entryInfo.rating;
 				}
 
-				journeyMessage.textContent = `Welcome to your journey "${journeyInfo.name}" (${(totalRatingPts/journeyInfo.entries.length).toFixed(1)} \u2605)`
+				let overallRating = (totalRatingPts/journeyInfo.entries.length).toFixed(1);
+
+				if (overallRating == "NaN") overallRating = "?"
+
+				journeyMessage.textContent = `Welcome to your journey "${journeyInfo.name}" (${overallRating} \u2605)`
 			})
 		</script>
 
