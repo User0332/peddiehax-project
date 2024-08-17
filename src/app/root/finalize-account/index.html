@@ -14,21 +14,48 @@
 
 	<body>
 		<script>
+			let globalAuthInfo;
+
 			getAuthInfo().then(
-				authInfo => fetch(
-					"/api/getself", {
-						"headers": {
-							Authorization: `Bearer ${authInfo.accessToken}`
+				authInfo => {
+					globalAuthInfo = authInfo;
+
+					fetch(
+						"/api/getself", {
+							"headers": {
+								Authorization: `Bearer ${authInfo.accessToken}`
+							}
 						}
-					}
-				)
+					)
+				}
 			).then(
 				res => res.json()
 			).then(
 				userData => { // main function for page
 					if (userData) location.href = "/dashboard" // disallow multiple-time account creation
 				}
-			)	
+			)
+
+			function createAccount() {
+				const userName = document.getElementById("userNameInput").value;
+
+				if (!userName) {
+					alert("You must enter a username!") // TODO: more alphanum validation
+					return
+				}
+
+				fetch(`/api/createaccount?username=${userName}`, {
+					"headers": {
+						Authorization: `Bearer ${globalAuthInfo.accessToken}`
+					}
+				}).then(
+					resp => location.href = "/dashboard"
+				)
+			}
 		</script>
+
+		<h1>Enter a Username: </h1>
+		<input type="text" id="userNameInput"/>
+		<button onclick="createAccount()">Finish Account Creation</button>
 	</body>
 </html>

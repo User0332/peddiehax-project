@@ -14,9 +14,55 @@
 
 	<body>
 		<script>
-			execWithUserData(userData => { // main function for page
+			execWithUserData(async (userData, authInfo) => { // main function for page
+				const greeting = document.createElement("h1")
+
+				authInfo
+
+				greeting.textContent = `Hello, ${authInfo.user.firstName}!`
+
+				document.body.prepend(
+					greeting
+				)
+
+				const journeysContainer = document.getElementById("myJourneys")
+
+				const resp = await fetch("/api/listjourneys", {
+					"headers": {
+						Authorization: `Bearer ${authInfo.accessToken}`
+					}
+				});
+				const recentJourneys = (await resp.json()).splice(-3)
+
+				for (const journeyID of recentJourneys) // TODO: fix - doesn't work fro some reason
+				{
+					const journeyInfo = await (
+						await fetch(`/api/getjourney?id=${journeyID}`, {
+							"headers": {
+								Authorization: `Bearer ${authInfo.accessToken}`
+							}
+						})
+					).json();
 				
-			})			
+					const journeyDiv = document.createElement("div");
+
+					const journeyName = document.createElement("h1");
+
+					journeyName.textContent = journeyInfo.name;
+
+					journeyDiv.appendChild(
+						journeyName
+					)
+
+					journeysContainer.appendChild(journeyDiv)
+				}
+			})
 		</script>
 	</body>
+
+	<h2>Recent Journeys</h2>
+	<div id="myJourneys">
+
+	</div>
+	<a href="/new-journey">Start a Journey</a>
 </html>

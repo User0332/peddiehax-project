@@ -136,22 +136,19 @@ def getself():
 		}
 	)
 
-@app.route("/api/create-account")
+@app.route("/api/createaccount")
 @auth.require_user
-def create_account():
-	user = User(id=current_user.user_id, username=request.args.username,)
+def createaccount():
+	try: user = User(id=current_user.user_id, username=request.args["username"])
+	except KeyError: return Response(status=400) # 400 bad request
 
-	if not user: return jsonify(None)
+	db.session.add(user)
+	db.session.commit()
 
-	return jsonify(
-		{
-			"id": user.id, # echo
-			"username": user.username,
-			"journeys": user.journeys.split(',')
-		}
-	)
+	return Response(status=200) # 200 ok
 
 @app.route("/api/listjourneys")
+@auth.require_user
 def listjourneys():
 	user = db.session.execute(
 		db.select(User).where(User.id == current_user.user_id)
@@ -162,6 +159,7 @@ def listjourneys():
 	return jsonify(user.journey_list)
 
 @app.route("/api/getjourney")
+@auth.require_user
 def getjourney():
 	journey: Journey = db.session.execute(
 		db.select(Journey).where(Journey.id == request.args.get("id", ''))
@@ -179,6 +177,7 @@ def getjourney():
 	})
 
 @app.route("/api/getentry")
+@auth.require_user
 def getentry():
 	entry: TripEntry = db.session.execute(
 		db.select(TripEntry).where(TripEntry.id == request.args.get("id", ''))
@@ -200,9 +199,8 @@ def getentry():
 		"timestamp": entry.added_at.isoformat()
 	})
 
-
-
 @app.route("/api/getphoto")
+@auth.require_user
 def getphoto():
 	photo: Image = db.session.execute(
 		db.select(Image).where(Image.id == request.args.get("id", ''))
@@ -216,8 +214,6 @@ def getphoto():
 	): return jsonify(None)
 
 	return jsonify(photo.to_base64())
-
-@app.route("/api/createjourney")
 
 @app.route("/api/addentry")
 @auth.require_user
@@ -267,7 +263,7 @@ def addentry():
 @app.route("/api/createjourney")
 @auth.require_user
 def createjourney():
-	name = request.form.get("name")
+	name = request.args.get("name")
 
 	if not name: return jsonify(None)
 

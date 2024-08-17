@@ -13,21 +13,27 @@ async function getAuthInfo() {
 })()
 
 function execWithUserData(func) {
+	let authSaved;
+
 	getAuthInfo().then(
-		authInfo => fetch(
-			"/api/getself", {
-				"headers": {
-					Authorization: `Bearer ${authInfo.accessToken}`
+		authInfo => {
+			authSaved = authInfo
+			
+			return fetch(
+				"/api/getself", {
+					"headers": {
+						Authorization: `Bearer ${authInfo.accessToken}`
+					}
 				}
-			}
-		)
+			)
+		}
 	).then(
 		res => res.json()
 	).then(
 		userData => { // main function for page
 			if (!userData) location.href = "/finalize-account"
 
-			func(userData)
+			func(userData, authSaved)
 		}
 	)
 }

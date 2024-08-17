@@ -51,7 +51,7 @@
 - POST /api/createjourney
 	- Create a journey under the current user
 	
-	- CLIENT sends form data containing the following
+	- CLIENT sends URL arg data containing the following
 		- `name`, `string` - Name of journey
 	
 	- SERVER responds with JSON string of new journey ID or null on failure

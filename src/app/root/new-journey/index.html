@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Create Journey</title>
+
+		<script 
+			src="https://www.unpkg.com/@propelauth/javascript@2.0.11/dist/javascript.min.js" 
+			integrity="sha384-FENNH2f7QuQvkZJBL7jebLr0OtYKgTA2iq+C5g3VXXX7SBwWmeMMoc+pBBtcn76G" 
+			crossorigin="anonymous"></script>
+		<script src="/static/js/authuser.js"></script>
+
+	</head>
+
+	<body>
+		<script>
+			let globalAuthInfo;
+
+			execWithUserData(async (userData, authInfo) => { // main function for page
+				globalAuthInfo = authInfo;
+
+				const message = document.createElement("h2")
+				message.textContent = "Let's start a journey"
+			
+				const greeting = document.createElement("h1")
+
+				greeting.textContent = `Hey, ${authInfo.user.firstName}`
+
+				document.body.prepend(
+					greeting,
+					message
+				);
+			})
+
+			function createJourney() {
+				const journeyName = document.getElementById("journeyName").value;
+
+				if (!journeyName) {
+					alert("Please specify a journey name!")
+					return
+				}
+
+				fetch(`/api/createjourney?name=${journeyName}`, {
+						"headers": {
+							Authorization: `Bearer ${globalAuthInfo.accessToken}`
+						}
+				}).then(
+					resp => resp.json()
+				).then(
+					journeyID => location.href = `/view-journey?id=${journeyID}`
+				)
+			}
+		</script>
+
+		<h3>Journey Name: </h3>
+		<input type="text" id="journeyName"/>
+
+		<button onclick="createJourney()">Create</button>
+	</body>
+</html>
