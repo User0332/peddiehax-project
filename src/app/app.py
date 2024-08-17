@@ -196,7 +196,8 @@ def getentry():
 		"images": entry.image_list,
 		"people": entry.people_list,
 		"rating": entry.rating,
-		"timestamp": entry.added_at.isoformat()
+		"timestamp": entry.added_at.isoformat(),
+		"journey": entry.parent_journey
 	})
 
 @app.route("/api/getphoto")

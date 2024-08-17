@@ -17,6 +17,10 @@ async function getJourneyInfo(journeyID, authInfo) {
 	return await (await makeAPICall(`/api/getjourney?id=${journeyID}`, authInfo)).json()
 }
 
+async function getBase64ImageData(imageID, authInfo) {
+	return await (await makeAPICall(`/api/getphoto?id=${imageID}`, authInfo)).json()
+}
+
 async function listJourneys(authInfo) {
 	return await (await makeAPICall("/api/listjourneys", authInfo)).json()
 }
