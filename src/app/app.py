@@ -107,6 +107,7 @@ class Image(db.Model):
 	data = db.Column(db.LargeBinary, nullable=False)
 	owner_id = db.Column(db.String, nullable=False)
 	is_public = db.Column(db.Boolean, default=False)
+	ftype = db.Column(db.String, nullable=False)
 
 	@property
 	def accessible_to_current_user(self):
@@ -214,14 +215,7 @@ def getphoto():
 		(not photo.accessible_to_current_user)
 	): return jsonify(None)
 
-	header = photo.data[8:]
-
-	if header[:8] == b'\x89PNG\r\n\x1a\n':
-		ftype = "png"
-	elif header[:3] == b'\xff\xd8\xff':
-		ftype = "jpeg"
-
-	return jsonify(f"data:image/{ftype};base64,{photo.to_base64()}")
+	return jsonify(f"data:image/{photo.ftype};base64,{photo.to_base64()}")
 
 @app.route("/api/addentry", methods=["POST"])
 @auth.require_user
@@ -247,7 +241,8 @@ def addentry():
 		img = Image(
 			id=genid.genid(),
 			data=file.stream.read(),
-			owner_id=current_user.user_id
+			owner_id=current_user.user_id,
+			ftype=file.filename.split('.')[-1]
 		)
 
 		entry.images+=f"{img.id},"
