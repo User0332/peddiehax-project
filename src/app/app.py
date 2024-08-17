@@ -1,6 +1,8 @@
 import datetime
+import random
 import secrets
 import base64
+import time
 import googlemaps
 from flask import Response, jsonify, request
 from webpy import App
@@ -280,7 +282,7 @@ def createjourney():
 
 	db.session.add(journey)
 
-	user: User = db.session.execute(
+	user: User | None = db.session.execute(
 		db.select(User).where(User.id == current_user.user_id)
 	).scalar()
 
@@ -306,7 +308,9 @@ def get_nearby_places():
 	except (IndexError, ValueError):
 		return jsonify(None)
 		
-	SEARCH_RADIUS_METERS = 100
+	SEARCH_RADIUS_METERS = 50
+
+	results: list[dict] = []
 
 	resp = maps.places_nearby(
 		location=location,
@@ -315,7 +319,14 @@ def get_nearby_places():
 
 	if resp["status"] != "OK": return jsonify(None)
 
-	results: dict = resp["results"]
+	results.extend(resp["results"])
+
+	while "next_page_token" in resp:
+		time.sleep(0.7) # reduce number of API requests
+		try: resp = maps.places_nearby(page_token=resp["next_page_token"])
+		except googlemaps.exceptions.ApiError: continue # it takes a little while to activate the next page token, so keep requesting until we can
+
+		results.extend(resp["results"])
 	
 	return jsonify(
 		{
@@ -398,3 +409,37 @@ def deluser():
 	auth.delete_user(current_user.user_id)
 
 	return Response(status=200) # 200 ok
+
+@app.route("/api/getplotdata")
+@auth.require_user
+def getplotdata():
+	journey: Journey = db.session.execute(
+		db.select(Journey).where(Journey.id == request.args.get("id", ''))
+	).scalar()
+
+	if (
+		(not journey) or
+		(not journey.accessible_to_current_user)
+	): return jsonify(None)
+
+	entries: list[str] =  journey.entry_list
+
+	if len(entries) < 2: return jsonify(None) # not enough entries to plot
+
+	path: list[str] = []
+
+	for entry_id in entries:
+		path.append(
+			db.session.execute(
+				db.select(TripEntry).where(TripEntry.id == entry_id)
+			).scalar().name
+		)
+
+	while len(path) > 22:
+		path.pop(random.randint(1, 20)) # remove random items in the middle
+
+	return jsonify({
+		"src": path[0],
+		"waypoints": path[1:-1],
+		"dst": path[-1]
+	})

@@ -16,45 +16,47 @@
 	</head>
 
 	<body>
-		<script>
-			let globalAuthInfo;
+		<div id="wrapper">
+			<script>
+				let globalAuthInfo;
 
-			getAuthInfo().then(
-				authInfo => {
-					globalAuthInfo = authInfo;
+				getAuthInfo().then(
+					authInfo => {
+						globalAuthInfo = authInfo;
 
-					fetch(
-						"/api/getself", {
-							"headers": {
-								Authorization: `Bearer ${authInfo.accessToken}`
+						fetch(
+							"/api/getself", {
+								"headers": {
+									Authorization: `Bearer ${authInfo.accessToken}`
+								}
 							}
-						}
+						)
+					}
+				).then(
+					res => res.json()
+				).then(
+					userData => { // main function for page
+						if (userData) location.href = "/dashboard" // disallow multiple-time account creation
+					}
+				)
+
+				function finalizeAccount() {
+					const userName = document.getElementById("userNameInput").value;
+
+					if (!userName) {
+						alert("You must enter a username!") // TODO: more alphanum validation
+						return
+					}
+
+					createAccount(userName, globalAuthInfo).then(
+						resp => location.href = "/dashboard"
 					)
 				}
-			).then(
-				res => res.json()
-			).then(
-				userData => { // main function for page
-					if (userData) location.href = "/dashboard" // disallow multiple-time account creation
-				}
-			)
+			</script>
 
-			function finalizeAccount() {
-				const userName = document.getElementById("userNameInput").value;
-
-				if (!userName) {
-					alert("You must enter a username!") // TODO: more alphanum validation
-					return
-				}
-
-				createAccount(userName, globalAuthInfo).then(
-					resp => location.href = "/dashboard"
-				)
-			}
-		</script>
-
-		<h1>Enter a Username: </h1>
-		<input type="text" id="userNameInput"/>
-		<button onclick="finalizeAccount()">Finish Account Creation</button>
+			<h1>Enter a Username: </h1>
+			<input type="text" id="userNameInput"/>
+			<button onclick="finalizeAccount()">Finish Account Creation</button>
+		</div>
 	</body>
 </html>

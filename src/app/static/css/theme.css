@@ -50,9 +50,9 @@ body {
 	justify-content: space-between;
 	align-items: center;
 	padding-bottom: 1vh;
-	position: absolute;
+	/* position: absolute;
 	bottom: 20px;
-	left: 10px;
+	left: 10px; */
 	right: 10px;
 	border-radius: 25px;
 
