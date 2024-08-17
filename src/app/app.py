@@ -306,7 +306,9 @@ def get_nearby_places():
 	except (IndexError, ValueError):
 		return jsonify(None)
 		
-	SEARCH_RADIUS_METERS = 50
+	SEARCH_RADIUS_METERS = 60
+
+	results: list[dict] = []
 
 	resp = maps.places_nearby(
 		location=location,
@@ -315,7 +317,12 @@ def get_nearby_places():
 
 	if resp["status"] != "OK": return jsonify(None)
 
-	results: dict = resp["results"]
+	results.extend(resp["results"])
+
+	while "next_page_token" in resp:
+		resp = maps.places_nearby(next_page_token=resp["next_page_token"])
+
+		results.extend(resp["results"])
 	
 	return jsonify(
 		{
