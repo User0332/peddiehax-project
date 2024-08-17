@@ -202,7 +202,7 @@ def getentry():
 @app.route("/api/getphoto")
 @auth.require_user
 def getphoto():
-	photo: Image = db.session.execute(
+	photo: Image | None = db.session.execute(
 		db.select(Image).where(Image.id == request.args.get("id", ''))
 	).scalar()
 
@@ -215,7 +215,7 @@ def getphoto():
 
 	return jsonify(photo.to_base64())
 
-@app.route("/api/addentry")
+@app.route("/api/addentry", methods=["POST"])
 @auth.require_user
 def addentry():
 	try:
@@ -228,7 +228,8 @@ def addentry():
 			rating=int(request.form["rating"]),
 			added_at=datetime.datetime.now(),
 			parent_journey=request.form["journey"],
-			owner_id=current_user.user_id
+			owner_id=current_user.user_id,
+			images=""
 		)
 	except (KeyError, ValueError): return Response(status=400) # 400 bad req
 
@@ -253,6 +254,7 @@ def addentry():
 		(not journey) or # we must use an or and two nots so that we do not raise AttributeError from using a null value
 		(not journey.accessible_to_current_user)
 	): return Response(status=400) # 400 bad req
+
 
 	journey.entries+=f"{entry.id},"
 
@@ -297,10 +299,10 @@ def get_nearby_places():
 
 	try:
 		split_string = coord_string.split(',')
-		location: tuple[int, int] = int(split_string[0]), int(split_string[1])
+		location: tuple[float, float] = float(split_string[0]), float(split_string[1])
 	except (IndexError, ValueError):
 		return jsonify(None)
-	
+		
 	SEARCH_RADIUS_METERS = 100
 
 	resp = maps.places_nearby(
@@ -308,7 +310,7 @@ def get_nearby_places():
 		radius=SEARCH_RADIUS_METERS 
 	)
 
-	if resp["status"] != 200: return jsonify(None)
+	if resp["status"] != "OK": return jsonify(None)
 
 	results: dict = resp["results"]
 	
@@ -386,7 +388,7 @@ def deluser():
 	if user:
 		for journey_id in user.journey_list:
 			deljourney_noroute(journey_id)
-			
+
 		db.session.delete(user)
 		db.session.commit()
 

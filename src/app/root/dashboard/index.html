@@ -52,8 +52,8 @@
 						const firstEntryID = journeyInfo.entries[0]
 						const lastEntryID = journeyInfo.entries[journeyInfo.entries.length-1]
 
-						const firstEntryInfo = getEntryInfo(firstEntryID, authInfo)
-						const lastEntryInfo = getEntryInfo(lastEntryID, authInfo)
+						const firstEntryInfo = await getEntryInfo(firstEntryID, authInfo);
+						const lastEntryInfo = await getEntryInfo(lastEntryID, authInfo);
 
 						journeyDiv.appendChild(
 							textElement('p', `From ${firstEntryInfo.name} to ${lastEntryInfo.name}`)

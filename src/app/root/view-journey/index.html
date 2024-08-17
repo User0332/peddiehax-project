@@ -30,7 +30,7 @@
 				
 
 				const message = document.createElement("h2")
-				message.textContent = `Welcome to your journey - ${journeyInfo.name}`
+				message.textContent = `Welcome to your journey "${journeyInfo.name}"`
 			
 				const greeting = document.createElement("h1")
 
@@ -47,7 +47,7 @@
 
 		</div>
 
-		<a href="" onclick="location.href = '/new-entry?journeyID={journeyID}'; return false" class="anchor-btn" id="new-entry-btn">Add a New Entry &#x2192;</a>
+		<a href="" onclick="location.href = `/new-entry?journeyID=${journeyID}`; return false" class="anchor-btn" id="new-entry-btn">Add a New Entry &#x2192;</a>
 
 	</body>
 </html>

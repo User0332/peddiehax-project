@@ -28,3 +28,7 @@ async function createAccount(userName, authInfo) {
 async function createJourney(journeyName, authInfo) {
 	return await (await makeAPICall(`/api/createjourney?name=${journeyName}`, authInfo)).json()
 }
+
+async function getNearbyLocations(loc, authInfo) {
+	return await (await makeAPICall(`/api/nearby?loc=${loc}`, authInfo)).json()
+}
