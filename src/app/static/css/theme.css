@@ -1,0 +1,50 @@
+body {
+	background-color: #DCEDFF;
+}
+
+.anchor-btn {
+	position: relative;
+	display: inline-block;
+	color: #208AAE;
+	text-decoration: none;
+	padding: 5px 0;
+	font-weight: bold;
+	transition: color 0.3s ease;
+}
+
+.anchor-btn::after {
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 2px;
+	bottom: 0;
+	left: 0;
+	background-color: #54428E;
+	transform: scaleX(0);
+	transform-origin: bottom right;
+	transition: transform 0.3s ease;
+}
+
+.anchor-btn:hover::after {
+	transform: scaleX(1);
+	transform-origin: bottom left;
+}
+
+.anchor-btn:hover {
+	color: #54428E;
+}
+
+.navbar-btn {
+	font-size: 3vh;
+}
+
+#navbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-bottom: 1vh;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}

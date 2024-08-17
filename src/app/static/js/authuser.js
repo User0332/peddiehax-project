@@ -1,10 +1,9 @@
 const authUrl = "https://2950078068.propelauthtest.com";
+const authClient = PropelAuth.createClient({
+	authUrl
+});
 
 async function getAuthInfo() {
-	const authClient = PropelAuth.createClient({
-		authUrl
-	});
-
 	return await authClient.getAuthenticationInfoOrNull();
 }
 

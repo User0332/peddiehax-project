@@ -1,0 +1,26 @@
+.journey-summary {
+	border-radius: 10px;
+	padding-top: 0.5vh;
+	padding-bottom: 0.5vh;
+	padding-left: 0.5vw;
+	padding-right: 0.5vw;
+	width: 60vw;
+	background-color: #208AAE;
+	color: white;
+
+	margin-bottom: 1vh;
+}
+
+#myJourneys {
+	padding-top: 0.5vh;
+	padding-bottom: 0.5vh;
+	padding-left: 0.5vw;
+	padding-right: 0.5vw;
+	width: 80vw;
+	border-radius: 10px;
+	background-color: #0EFEBA;
+}
+
+#start-journey-btn {
+	font-size: 2vh;
+}

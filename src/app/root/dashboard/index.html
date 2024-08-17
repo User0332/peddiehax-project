@@ -11,7 +11,11 @@
 		<script src="/static/js/authuser.js"></script>
 		<script src="/static/js/api.js"></script>
 		<script src="/static/js/elemutils.js"></script>
+		<script src="/static/js/navbar.js" defer></script>
 
+
+		<link rel="stylesheet" href="/static/css/theme.css"/>
+		<link rel="stylesheet" href="/static/css/dashboard.css"/>
 	</head>
 
 	<body>
@@ -30,6 +34,8 @@
 					const journeyInfo = await getJourneyInfo(journeyID, authInfo)
 				
 					const journeyDiv = document.createElement("div");
+
+					journeyDiv.classList.add("journey-summary")
 
 					journeyDiv.appendChild(
 						textElement("h3", journeyInfo.name)
@@ -60,9 +66,9 @@
 		</script>
 	</body>
 
-	<h2>Recent Journeys</h2>
 	<div id="myJourneys">
+		<h2>Recent Journeys</h2>
 
 	</div>
-	<a href="/new-journey">Start a Journey</a>
+	<a href="/new-journey" class="anchor-btn" id="start-journey-btn">Start a New Journey &#x2192;</a>
 </html>
