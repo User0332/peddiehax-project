@@ -55,7 +55,7 @@
 						textElement("h2", entryInfo.name)
 					);
 
-					if (entryInfo.people.length > 0) entrySummaryContainer.append(
+					if (entryInfo.people) entrySummaryContainer.append(
 						textElement("h3", `With ${entryInfo.people.join(", ")}`)
 					)
 
@@ -66,6 +66,12 @@
 					entrySummaryContainer.append(
 						textElement("h3", `You rated: ${entryInfo.rating} \u2605`)
 					);
+					var a = document.createElement('a')
+					a.href = `/view-entry?entryID=${entryID}`;
+		
+					a.text = "view imgs"
+
+					entrySummaryContainer.append(a)
 
 					entriesContainer.append(entrySummaryContainer);
 
@@ -83,6 +89,8 @@
 		<div id="entries-container">
 
 		</div>
+
+
 
 		<a href="" onclick="location.href = `/new-entry?journeyID=${journeyID}`; return false" class="anchor-btn" id="new-entry-btn">Add a New Entry &#x2192;</a>
 
