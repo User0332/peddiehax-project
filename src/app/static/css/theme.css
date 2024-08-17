@@ -48,3 +48,15 @@ body {
 	left: 0;
 	right: 0;
 }
+
+.light-anchor-style {
+	color: white;
+}
+
+.light-anchor-style::after {
+	background-color: #dfd8f6;
+}
+
+.light-anchor-style:hover {
+	color: #dfd8f6;
+}

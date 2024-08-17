@@ -27,19 +27,25 @@
 
 				const journeysContainer = document.getElementById("myJourneys")
 
-				const recentJourneys = (await listJourneys(authInfo)).splice(-3)
+				const recentJourneys = (await listJourneys(authInfo)).splice(-3).reverse();
 
 				for (const journeyID of recentJourneys) // TODO: fix - doesn't work fro some reason
 				{
-					const journeyInfo = await getJourneyInfo(journeyID, authInfo)
+					const journeyInfo = await getJourneyInfo(journeyID, authInfo);
 				
 					const journeyDiv = document.createElement("div");
 
-					journeyDiv.classList.add("journey-summary")
+					journeyDiv.classList.add("journey-summary");
+
+					const anchor = document.createElement('a');
+
+					anchor.appendChild(textElement("h3", journeyInfo.name));
+					anchor.href = `/view-journey?id=${journeyID}`;
+					anchor.className = "anchor-btn light-anchor-style";
 
 					journeyDiv.appendChild(
-						textElement("h3", journeyInfo.name)
-					)
+						anchor
+					);
 
 					if (journeyInfo.entries.length > 1)
 					{

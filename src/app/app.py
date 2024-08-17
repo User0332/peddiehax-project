@@ -320,3 +320,76 @@ def get_nearby_places():
 			for place in results
 		}
 	)
+
+def delentry_noroute(entry_id: str):
+	entry: TripEntry | None = db.session.execute(
+		db.select(TripEntry).where(TripEntry.id == entry_id)
+	).scalar()
+
+	if (
+		(not entry) or
+		(not entry.accessible_to_current_user)
+	): return False
+
+	for image_id in entry.image_list:
+		img: Image | None = db.session.execute(
+			db.select(Image).where(Image.id == image_id)
+		).scalar()
+
+		db.session.delete(img)
+
+	db.session.delete(entry)
+	db.session.commit()
+
+	return True
+
+def deljourney_noroute(journey_id: str):
+	journey: Journey | None = db.session.execute(
+		db.select(Journey).where(Journey.id == journey_id)
+	).scalar()
+
+	if (
+		(not journey) or
+		(not journey.accessible_to_current_user)
+	): return False
+
+	for entry_id in journey.entry_list:
+		delentry_noroute(entry_id)
+
+	db.session.delete(journey)
+	db.session.commit()
+
+	return True
+
+@app.route("/api/deljourney")
+@auth.require_user
+def deljourney():
+	if not deljourney_noroute(request.args.get("id")): return Response(status=400)
+
+	return Response(status=200)
+
+
+@app.route("/api/delentry")
+@auth.require_user
+def delentry():
+	if not delentry_noroute(request.args.get("id")): return Response(status=400)
+
+	return Response(status=200)
+
+@app.route("/api/deluser")
+@auth.require_user
+def deluser():
+	user: User | None = db.session.execute(
+		db.select(User).where(User.id == current_user.user_id)
+	).scalar()
+
+	if user:
+		for journey_id in user.journey_list:
+			deljourney_noroute(journey_id)
+			
+		db.session.delete(user)
+		db.session.commit()
+
+	auth.delete_user(current_user.user_id)
+
+	return Response(status=200) # 200 ok
