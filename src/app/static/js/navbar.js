@@ -7,7 +7,7 @@ function loadNavbar() {
 
 	const pages = {
 		"Dashboard": "/dashboard",
-		"Start a Journey": "/new-journey",
+		"My Journeys": "/my-journeys",
 		"Profile": "/profile",
 	}
 

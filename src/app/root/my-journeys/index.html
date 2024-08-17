@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>My Journeys</title>
+
+		<script 
+			src="https://www.unpkg.com/@propelauth/javascript@2.0.11/dist/javascript.min.js" 
+			integrity="sha384-FENNH2f7QuQvkZJBL7jebLr0OtYKgTA2iq+C5g3VXXX7SBwWmeMMoc+pBBtcn76G" 
+			crossorigin="anonymous"></script>
+		<script src="/static/js/authuser.js"></script>
+		<script src="/static/js/api.js"></script>
+		<script src="/static/js/elemutils.js"></script>
+		<script src="/static/js/navbar.js" defer></script>
+
+
+		<link rel="stylesheet" href="/static/css/theme.css"/>
+		<link rel="stylesheet" href="/static/css/dashboard.css"/>
+	</head>
+
+	<body>
+		<script>
+			execWithUserData(async (userData, authInfo) => { // main function for page
+				document.body.prepend(
+					textElement("h1", `Hello, ${authInfo.user.firstName}!`)
+				)
+
+				const journeysContainer = document.getElementById("myJourneys")
+
+				const recentJourneys = (await listJourneys(authInfo)).reverse();
+
+				for (const journeyID of recentJourneys) // TODO: fix - doesn't work fro some reason
+				{
+					const journeyInfo = await getJourneyInfo(journeyID, authInfo);
+				
+					const journeyDiv = document.createElement("div");
+
+					journeyDiv.className = "journey-summary";
+
+					const anchor = document.createElement('a');
+
+					anchor.appendChild(textElement("h3", journeyInfo.name));
+					anchor.href = `/view-journey?id=${journeyID}`;
+					anchor.className = "anchor-btn light-anchor-style";
+
+					journeyDiv.appendChild(
+						anchor
+					);
+
+					if (journeyInfo.entries.length > 1)
+					{
+						const firstEntryID = journeyInfo.entries[0]
+						const lastEntryID = journeyInfo.entries[journeyInfo.entries.length-1]
+
+						const firstEntryInfo = await getEntryInfo(firstEntryID, authInfo);
+						const lastEntryInfo = await getEntryInfo(lastEntryID, authInfo);
+
+						journeyDiv.appendChild(
+							textElement('p', `From ${firstEntryInfo.name} to ${lastEntryInfo.name}`)
+						)
+					}
+					else
+					{
+						journeyDiv.appendChild(
+							textElement('p', "Your journey has just begun!")
+						)
+					}
+
+					journeysContainer.appendChild(journeyDiv)
+				}
+			})
+		</script>
+	</body>
+
+	<div id="myJourneys">
+		<h2>My Journeys</h2>
+
+	</div>
+	<a href="/new-journey" class="anchor-btn" id="start-journey-btn">Start a New Journey &#x2192;</a>
+</html>

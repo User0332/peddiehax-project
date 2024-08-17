@@ -55,7 +55,7 @@
 						textElement("h2", entryInfo.name)
 					);
 
-					if (entryInfo.people) entrySummaryContainer.append(
+					if (entryInfo.people.length > 0) entrySummaryContainer.append(
 						textElement("h3", `With ${entryInfo.people.join(", ")}`)
 					)
 
