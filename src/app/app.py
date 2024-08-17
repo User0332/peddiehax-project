@@ -1,6 +1,7 @@
 import datetime
 import secrets
 import base64
+import time
 import googlemaps
 from flask import Response, jsonify, request
 from webpy import App
@@ -320,7 +321,9 @@ def get_nearby_places():
 	results.extend(resp["results"])
 
 	while "next_page_token" in resp:
-		resp = maps.places_nearby(next_page_token=resp["next_page_token"])
+		time.sleep(0.7) # reduce number of API requests
+		try: resp = maps.places_nearby(location=location, radius=SEARCH_RADIUS_METERS, page_token=resp["next_page_token"])
+		except googlemaps.exceptions.ApiError: continue # it takes a little while to activate the next page token, so keep requesting until we can
 
 		results.extend(resp["results"])
 	
@@ -405,3 +408,8 @@ def deluser():
 	auth.delete_user(current_user.user_id)
 
 	return Response(status=200) # 200 ok
+
+@app.route("/api/getplotdata")
+@auth.require_user
+def getplotdata():
+	pass
