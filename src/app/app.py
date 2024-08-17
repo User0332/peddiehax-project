@@ -306,7 +306,7 @@ def get_nearby_places():
 	except (IndexError, ValueError):
 		return jsonify(None)
 		
-	SEARCH_RADIUS_METERS = 100
+	SEARCH_RADIUS_METERS = 50
 
 	resp = maps.places_nearby(
 		location=location,
