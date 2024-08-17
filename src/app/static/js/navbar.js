@@ -3,7 +3,9 @@
 function loadNavbar() {
 	const navbar = document.createElement("div");
 	navbar.id = "navbar";
-	navbar.appendChild(document.createElement("div")) // for spacing
+	const header = document.createElement("div");
+	header.classList.add("")
+	navbar.appendChild() // for spacing
 
 	const pages = {
 		"Dashboard": "/dashboard",
