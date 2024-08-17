@@ -11,6 +11,7 @@
 		<script src="/static/js/authuser.js"></script>
 		<script src="/static/js/api.js"></script>
 		<script src="/static/js/navbar.js" defer></script>
+		<script src="/static/js/elemutils.js" defer></script>
 
 		<link rel="stylesheet" href="/static/css/theme.css"/>
 		<link rel="stylesheet" href="/static/css/view-journey.css"/>
@@ -27,19 +28,51 @@
 				globalAuthInfo = authInfo;
 
 				const journeyInfo = await getJourneyInfo(journeyID, authInfo)
-				
 
-				const message = document.createElement("h2")
-				message.textContent = `Welcome to your journey "${journeyInfo.name}"`
+				const journeyMessage = document.createElement("h2")
 			
 				const greeting = document.createElement("h1")
 
-				greeting.textContent = `Hey, ${authInfo.user.firstName}`
+				greeting.textContent = `Hey, ${authInfo.user.firstName}`;
 
 				document.body.prepend(
 					greeting,
-					message
+					journeyMessage
 				);
+
+				const entriesContainer = document.getElementById("entries-container");
+
+				let totalRatingPts = 0;
+
+				for (const entryID of journeyInfo.entries) {
+					const entryInfo = await getEntryInfo(entryID, authInfo);
+
+					const entrySummaryContainer = document.createElement("div");
+					
+					entrySummaryContainer.className = "entry-summary"
+
+					entrySummaryContainer.append(
+						textElement("h2", entryInfo.name)
+					);
+
+					entrySummaryContainer.append(
+						textElement("h3", `With ${entryInfo.people.join(", ")}`)
+					)
+
+					entrySummaryContainer.append(
+						textElement('p', entryInfo.description)
+					);
+
+					entrySummaryContainer.append(
+						textElement("h3", `You rated: ${entryInfo.rating} \u2605`)
+					);
+
+					entriesContainer.append(entrySummaryContainer);
+
+					totalRatingPts+=entryInfo.rating;
+				}
+
+				journeyMessage.textContent = `Welcome to your journey "${journeyInfo.name}" (${(totalRatingPts/journeyInfo.entries.length).toFixed(1)} \u2605)`
 			})
 		</script>
 
