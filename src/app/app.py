@@ -274,6 +274,15 @@ def createjourney():
 	)
 
 	db.session.add(journey)
+
+	user: User = db.session.execute(
+		db.select(User).where(User.id == current_user.user_id)
+	).scalar()
+
+	if not user: return jsonify(None)
+
+	user.journeys+=f"{journey.id},"
+
 	db.session.commit()
 
 	return jsonify(journey.id)

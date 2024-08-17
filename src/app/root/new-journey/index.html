@@ -9,7 +9,7 @@
 			integrity="sha384-FENNH2f7QuQvkZJBL7jebLr0OtYKgTA2iq+C5g3VXXX7SBwWmeMMoc+pBBtcn76G" 
 			crossorigin="anonymous"></script>
 		<script src="/static/js/authuser.js"></script>
-
+		<script src="/static/js/api.js"></script>
 	</head>
 
 	<body>
@@ -32,7 +32,7 @@
 				);
 			})
 
-			function createJourney() {
+			function newJourney() {
 				const journeyName = document.getElementById("journeyName").value;
 
 				if (!journeyName) {
@@ -40,13 +40,7 @@
 					return
 				}
 
-				fetch(`/api/createjourney?name=${journeyName}`, {
-						"headers": {
-							Authorization: `Bearer ${globalAuthInfo.accessToken}`
-						}
-				}).then(
-					resp => resp.json()
-				).then(
+				createJourney(journeyName, globalAuthInfo).then(
 					journeyID => location.href = `/view-journey?id=${journeyID}`
 				)
 			}
@@ -55,6 +49,6 @@
 		<h3>Journey Name: </h3>
 		<input type="text" id="journeyName"/>
 
-		<button onclick="createJourney()">Create</button>
+		<button onclick="newJourney()">Create</button>
 	</body>
 </html>

@@ -9,50 +9,50 @@
 			integrity="sha384-FENNH2f7QuQvkZJBL7jebLr0OtYKgTA2iq+C5g3VXXX7SBwWmeMMoc+pBBtcn76G" 
 			crossorigin="anonymous"></script>
 		<script src="/static/js/authuser.js"></script>
+		<script src="/static/js/api.js"></script>
+		<script src="/static/js/elemutils.js"></script>
 
 	</head>
 
 	<body>
 		<script>
 			execWithUserData(async (userData, authInfo) => { // main function for page
-				const greeting = document.createElement("h1")
-
-				authInfo
-
-				greeting.textContent = `Hello, ${authInfo.user.firstName}!`
-
 				document.body.prepend(
-					greeting
+					textElement("h1", `Hello, ${authInfo.user.firstName}!`)
 				)
 
 				const journeysContainer = document.getElementById("myJourneys")
 
-				const resp = await fetch("/api/listjourneys", {
-					"headers": {
-						Authorization: `Bearer ${authInfo.accessToken}`
-					}
-				});
-				const recentJourneys = (await resp.json()).splice(-3)
+				const recentJourneys = (await listJourneys(authInfo)).splice(-3)
 
 				for (const journeyID of recentJourneys) // TODO: fix - doesn't work fro some reason
 				{
-					const journeyInfo = await (
-						await fetch(`/api/getjourney?id=${journeyID}`, {
-							"headers": {
-								Authorization: `Bearer ${authInfo.accessToken}`
-							}
-						})
-					).json();
+					const journeyInfo = await getJourneyInfo(journeyID, authInfo)
 				
 					const journeyDiv = document.createElement("div");
 
-					const journeyName = document.createElement("h1");
-
-					journeyName.textContent = journeyInfo.name;
-
 					journeyDiv.appendChild(
-						journeyName
+						textElement("h3", journeyInfo.name)
 					)
+
+					if (journeyInfo.entries.length > 1)
+					{
+						const firstEntryID = journeyInfo.entries[0]
+						const lastEntryID = journeyInfo.entries[journeyInfo.entries.length-1]
+
+						const firstEntryInfo = getEntryInfo(firstEntryID, authInfo)
+						const lastEntryInfo = getEntryInfo(lastEntryID, authInfo)
+
+						journeyDiv.appendChild(
+							textElement('p', `From ${firstEntryInfo.name} to ${lastEntryInfo.name}`)
+						)
+					}
+					else
+					{
+						journeyDiv.appendChild(
+							textElement('p', "Your journey has just begun!")
+						)
+					}
 
 					journeysContainer.appendChild(journeyDiv)
 				}

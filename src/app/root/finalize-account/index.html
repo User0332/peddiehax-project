@@ -9,7 +9,7 @@
 			integrity="sha384-FENNH2f7QuQvkZJBL7jebLr0OtYKgTA2iq+C5g3VXXX7SBwWmeMMoc+pBBtcn76G" 
 			crossorigin="anonymous"></script>
 		<script src="/static/js/authuser.js"></script>
-
+		<script src="/static/js/api.js"></script>
 	</head>
 
 	<body>
@@ -36,7 +36,7 @@
 				}
 			)
 
-			function createAccount() {
+			function finalizeAccount() {
 				const userName = document.getElementById("userNameInput").value;
 
 				if (!userName) {
@@ -44,11 +44,7 @@
 					return
 				}
 
-				fetch(`/api/createaccount?username=${userName}`, {
-					"headers": {
-						Authorization: `Bearer ${globalAuthInfo.accessToken}`
-					}
-				}).then(
+				createAccount(userName, globalAuthInfo).then(
 					resp => location.href = "/dashboard"
 				)
 			}
@@ -56,6 +52,6 @@
 
 		<h1>Enter a Username: </h1>
 		<input type="text" id="userNameInput"/>
-		<button onclick="createAccount()">Finish Account Creation</button>
+		<button onclick="finalizeAccount()">Finish Account Creation</button>
 	</body>
 </html>

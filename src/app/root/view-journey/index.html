@@ -9,7 +9,7 @@
 			integrity="sha384-FENNH2f7QuQvkZJBL7jebLr0OtYKgTA2iq+C5g3VXXX7SBwWmeMMoc+pBBtcn76G" 
 			crossorigin="anonymous"></script>
 		<script src="/static/js/authuser.js"></script>
-
+		<script src="/static/js/api.js"></script>
 	</head>
 
 	<body>
@@ -21,13 +21,7 @@
 			execWithUserData(async (userData, authInfo) => { // main function for page
 				globalAuthInfo = authInfo;
 
-				const journeyInfo = await (
-					await fetch(`/api/getjourney?id=${journeyID}`, {
-						"headers": {
-							Authorization: `Bearer ${authInfo.accessToken}`
-						}
-					})
-				).json()
+				const journeyInfo = await getJourneyInfo(journeyID, authInfo)
 				
 
 				const message = document.createElement("h2")
