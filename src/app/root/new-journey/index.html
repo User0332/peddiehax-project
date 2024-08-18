@@ -41,7 +41,6 @@
 					);
 
 					document.getElementById("publicbtn").onclick = () => {
-						console.log("Asd");
 						const label = document.getElementById("publicbtnlabel");
 						
 						if (label.textContent == "Private") {
@@ -57,15 +56,7 @@
 
 				function newJourney() {
 					const journeyName = document.getElementById("journey-name").value;
-					const isPublicStr = document.getElementById("publicbtn").value;
-
-					let isPublic;
-
-					if (isPublicStr == "on") {
-						isPublic = true;
-					} else {
-						isPublic = false;
-					}
+					const isPublic = document.getElementById("publicbtn").checked;
 
 					if (!journeyName) {
 						alert("Please specify a journey name!")

@@ -459,12 +459,12 @@ def getfeed(): # TODO: make post creation API accept is_public param, create fro
 		).scalars().all()
 	)
 
-	if len(posts) <= 3: return jsonify([
+	if len(posts) <= 5: return jsonify([
 		post.id for post in posts
 	])
 
 	return jsonify([
-		post.id for post in random.sample(posts, 3)
+		post.id for post in random.sample(posts, 5)
 	])
 
 @app.route("/api/getuser")

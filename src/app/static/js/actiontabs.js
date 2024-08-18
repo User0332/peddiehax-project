@@ -10,6 +10,18 @@ circularBG1.className = "actions";
 const actionRing = document.createElement('ul');
 actionRing.className = "action-ring";
 
+circularBG1.appendChild(actionRing);
+
+const circularBG2 = document.createElement('div');
+circularBG2.className = "actions-bg-1";
+
+const circularBG3 = document.createElement('div');
+circularBG3.className = "actions-bg-2";
+
+tab.appendChild(circularBG1);
+tab.appendChild(circularBG2);
+tab.appendChild(circularBG3);
+
 // Add action options -- TODO ADD CLICK ACTIONS
 
 // Example Actions -- NEEDS FUNCTIONALITY -- JUST LOOKS PRETTY RN
@@ -33,20 +45,12 @@ for (const [imgfile, href] of Object.entries(icons)) {
     anchor.appendChild(img);
     action.append(anchor);
 
-	action.onclick = () => anchor.click();
-	img.onclick = () => anchor.click();
+	action.onclick = () => {
+		location.href = href;
+	};
+
+	action.style = "z-index: 99;"
+	// img.onclick = () => anchor.click();
 
     actionRing.appendChild(action);
 }
-
-circularBG1.appendChild(actionRing);
-
-const circularBG2 = document.createElement('div');
-circularBG2.className = "actions-bg-1";
-
-const circularBG3 = document.createElement('div');
-circularBG3.className = "actions-bg-2";
-
-tab.appendChild(circularBG1);
-tab.appendChild(circularBG2);
-tab.appendChild(circularBG3);

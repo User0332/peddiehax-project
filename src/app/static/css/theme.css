@@ -158,7 +158,10 @@ body {
 .tab .toggle .toggle-inner {
 	margin: 0;
 	padding: 0;
-	transform: translateY(-10%);
+}	
+
+@media only screen and (orientation: landscape) {
+	.tab .toggle .toggle-inner { transform: translateY(-10%); }
 }
 
 .tab.active .toggle {
@@ -190,12 +193,14 @@ body {
 	background: #ec87a1;
 	transition: 0.5s ease-in-out, opacity 2s ease-out;
 	transition-delay: 0.5s;
+	z-index: -1;
 }
 
 .tab .actions-bg-2 {
 	background: #ffffff;
 	transition: 0.6s ease-in-out, opacity 2s ease-out;
 	transition-delay: 0.4s;
+	z-index: -1;
 }
 
 .tab.active .actions,
@@ -208,6 +213,7 @@ body {
 .tab.active .actions-bg-2 {
 	transition-delay: 0s;
 	opacity: 0;
+	pointer-events: none;
 }
 
 
@@ -229,13 +235,14 @@ body {
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
+	pointer-events: auto;
 	/* transform: translateX(-25%); */
 }
 
 .tab ul.action-ring li img {
 	width: 5vw;
 	transform: rotate(180deg);
-	pointer-events: none;
+	pointer-events: auto;
 }
 
 .tab ul.action-ring li:nth-child(1) {
