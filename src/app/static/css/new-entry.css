@@ -1,0 +1,12 @@
+#entryData {
+	display: flex;
+	flex-direction: column;
+	justify-content: baseline;
+	align-items: center;
+	height: 80%;
+}
+
+#entryData > * {
+	display: flex;
+	margin: 1px;
+}
