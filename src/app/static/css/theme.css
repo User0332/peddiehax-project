@@ -1,3 +1,17 @@
+:root {
+	--white: #ffffff;
+	--light-grey: #edf0f1;
+	--violet: #655be1;
+	--dark-violet: #5146e1;
+	--black: #21232a;
+  }
+
+* {
+	margin:0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
 html, body {
 	height: 100%;
 	width: 100%;
@@ -104,7 +118,75 @@ body {
 }
 
 .bloc-icon img {
-	width: 15vw;
+	width: 12vw;
+}
+
+/* Dynamic Tab Nav Bar Menu */
+.tab {
+	width:100vw;
+	height: 80px;
+	z-index: 1;
+	user-select: none;
+	position: fixed;
+	bottom: 0;
+	display: flex;
+	justify-content: space-around;
+
+}
+
+.tab .toggle {
+	position: absolute;
+	top: -50px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 80px;
+	height: 80px;
+	background: #351233;
+	z-index: 1;
+	border-radius: 50%;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items:end;
+	color: #ffffff;
+	font-size: 4.5em;
+	transition: 1s ease-in-out;
+	text-align: center;
+}
+
+.tab.active .toggle {
+	transform: translateX(-50%) rotate(225deg);
+}
+
+.tab ul.menu {
+	position: absolute;
+	inset: 0;
+	background: white;
+	border-radius: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap:55px;
+	box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+}
+
+.tab ul.menu li {
+	list-style: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.tab ul.menu li img{
+	font-size: 1.5em;
+	color:#bbb;
+	pointer-events: none;
+	width: 8vw;
+}
+
+.tab ul.menu li:hover img{
+	fill:#2196f3;
+
 }
 
 /* @media screen and (min-width: 600px) {
@@ -138,7 +220,6 @@ body {
 	background-color: gray;
 }
 
-/* CSS */
 .journey {
   background-color: #FFFFFF;
   border: 1px solid #222222;
