@@ -29,6 +29,10 @@ async function listJourneys(authInfo) {
 	return await (await makeAPICall("/api/listjourneys", authInfo)).json()
 }
 
+async function getFeed(authInfo) {
+	return await (await makeAPICall("/api/getfeed", authInfo)).json()
+}
+
 async function createAccount(userName, authInfo) {
 	return await makeAPICall(`/api/createaccount?username=${userName}`, authInfo)
 }
