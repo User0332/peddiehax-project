@@ -45,6 +45,21 @@ body {
 	font-size: 3vh;
 }
 
+.header{
+    background-color: var(--black);
+    box-shadow: 1px 1px 5px 0px var(--gray);
+    position: sticky;
+    top: 0;
+    width: 100%;
+}
+
+.logo{
+    display: inline-block;
+    color: var(--white);
+    font-size: 60px;
+    margin-left: 10px;
+}
+
 #navbar {
 	display: flex;
 	justify-content: space-between;
@@ -58,6 +73,32 @@ body {
 
 	background-color: rgb(155, 155, 155);
 }
+
+.mobile-nav {
+	background: #F1F1F1;
+	position: fixed;
+	bottom: 0;
+	height: 10%;
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+}
+
+.bloc-icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.bloc-icon img {
+	width: 30px;
+}
+
+/* @media screen and (min-width: 600px) {
+	.mobile-nav {
+	display: none;
+	}
+} */
 
 .light-anchor-style {
 	color: white;
