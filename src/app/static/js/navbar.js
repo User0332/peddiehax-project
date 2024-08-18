@@ -69,7 +69,7 @@ function tabBar() {
 	const dashboard = document.createElement('a');
 	dashboard.href = "/dashboard";
 	const icon1 = document.createElement('img');
-	icon1.src = `/static/images/dashboard.svg`;
+	icon1.src = `/static/images/Dashboard.svg`;
 	icon1.style = "transform: scale(0.5)";
 
 	dashboard.appendChild(icon1);
