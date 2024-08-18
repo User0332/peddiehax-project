@@ -443,3 +443,20 @@ def getplotdata():
 		"waypoints": path[1:-1],
 		"dst": path[-1]
 	})
+
+@app.route("/api/getfeed")
+@auth.require_user
+def getfeed(): # TODO: make post creation API accept is_public param, create frontend for viewing feed
+	posts: list[Journey] = list(
+		db.session.execute(
+			db.select(Journey).where(Journey.is_public == True)
+		).scalars().all()
+	)
+
+	if len(posts) <= 3: return jsonify([
+		post.id for post in posts
+	])
+
+	return jsonify([
+		post.id for post in random.sample(posts, 3)
+	])
