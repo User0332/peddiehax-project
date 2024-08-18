@@ -4,8 +4,6 @@ function loadNavbar() {
 	const navbar = document.createElement("div");
 	navbar.classList.add("mobile-nav");
 	const header = document.createElement("div");
-	header.classList.add("header")
-	navbar.appendChild(header) // for spacing
 
 	const pages = {
 		"Dashboard": "/dashboard",
@@ -16,8 +14,7 @@ function loadNavbar() {
 	for (const [page, href] of Object.entries(pages)) {
 		const anchor = document.createElement('a');
 		anchor.href = href;
-		anchor.textContent = page;
-		// anchor.className = "anchor-btn navbar-btn";
+		// anchor.textContent = page;
 		anchor.className = "bloc-icon";
 
 		const img = document.createElement('img');
@@ -29,8 +26,8 @@ function loadNavbar() {
 
 	const logout = document.createElement('a');
 	logout.href = "";
-	logout.className = "anchor-btn navbar-btn";
-	logout.textContent = "Logout";
+	logout.className = "bloc-icon";
+	// logout.textContent = "Logout";
 
 	const img = document.createElement('img');
 	img.src = `/static/images/logout.svg`;
