@@ -83,3 +83,15 @@ body {
 .light-anchor-style:hover {
 	color: #3179ee;
 }
+
+.blue-btn {
+	background-color: #3179ee;
+}
+
+.blue-btn:hover {
+	background-color: #2266d3;
+}
+
+.blue-btn:disabled {
+	background-color: gray;
+}
