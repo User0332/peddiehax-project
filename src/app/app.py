@@ -12,7 +12,7 @@ import genid
 import sys
 import os
 
-DEBUG = True
+DEBUG = False
 
 current_user: LoggedInUser
 
