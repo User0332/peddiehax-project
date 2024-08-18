@@ -14,13 +14,17 @@ actionRing.className = "action-ring";
 
 // Example Actions -- NEEDS FUNCTIONALITY -- JUST LOOKS PRETTY RN
 
+const journeyID_Fallback = new URLSearchParams(location.search).get("id");
+
 const icons = {
    "add-person": "/profile",
-    "add-text": "",
+    "add-text": `/new-entry?journeyID=${journeyID_Fallback}`,
     "add-location": "/new-journey"
 }
 
 for (const [imgfile, href] of Object.entries(icons)) {
+	if ((imgfile == "add-text") && location.pathname != "/view-journey/") continue;
+
     const action = document.createElement('li');
     const anchor = document.createElement('a');
     anchor.href = href;
@@ -28,6 +32,10 @@ for (const [imgfile, href] of Object.entries(icons)) {
     img.src = `/static/images/${imgfile}.svg`;
     anchor.appendChild(img);
     action.append(anchor);
+
+	action.onclick = () => anchor.click();
+	img.onclick = () => anchor.click();
+
     actionRing.appendChild(action);
 }
 

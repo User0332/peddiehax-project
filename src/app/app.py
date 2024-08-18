@@ -177,6 +177,7 @@ def getjourney():
 		"id": journey.id, # echo
 		"name": journey.name,
 		"entries": journey.entry_list,
+		"owner": journey.owner_id
 	})
 
 @app.route("/api/getentry")
@@ -465,3 +466,20 @@ def getfeed(): # TODO: make post creation API accept is_public param, create fro
 	return jsonify([
 		post.id for post in random.sample(posts, 3)
 	])
+
+@app.route("/api/getuser")
+@auth.require_user
+def getuser():
+	user = db.session.execute(
+		db.select(User).where(User.id == request.args.get("id"))
+	).scalar()
+
+	if not user: return jsonify(None)
+
+	return jsonify(
+		{
+			"username": user.username,
+			"id": user.id,
+			"journeys": user.journey_list
+		}
+	)

@@ -21,6 +21,10 @@ async function getJourneyInfo(journeyID, authInfo) {
 	return await (await makeAPICall(`/api/getjourney?id=${journeyID}`, authInfo)).json()
 }
 
+async function getUserInfo(userID, authInfo) {
+	return await (await makeAPICall(`/api/getuser?id=${userID}`, authInfo)).json()
+}
+
 async function getBase64ImageData(imageID, authInfo) {
 	return await (await makeAPICall(`/api/getphoto?id=${imageID}`, authInfo)).json()
 }
@@ -38,7 +42,7 @@ async function createAccount(userName, authInfo) {
 }
 
 async function createJourney(journeyName, isPublic, authInfo) {
-	return await (await makeAPICall(`/api/createjourney?name=${journeyName}?public=${isPublic}`, authInfo)).json()
+	return await (await makeAPICall(`/api/createjourney?name=${journeyName}&public=${isPublic}`, authInfo)).json()
 }
 
 async function getNearbyLocations(loc, authInfo) {

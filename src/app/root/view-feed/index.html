@@ -73,9 +73,15 @@
 						else
 						{
 							journeyDiv.appendChild(
-								textElement('p', "Your journey has just begun!")
+								textElement('p', "This journey has just begun!")
 							)
 						}
+
+						const ownerID = journeyInfo.owner;
+
+						const userName = (await getUserInfo(ownerID, authInfo)).username;
+
+						journeyDiv.appendChild(textElement("h3", `by @${userName}`))
 
 						journeysContainer.appendChild(journeyDiv)
 					}
