@@ -158,6 +158,81 @@ body {
 	transform: translateX(-50%) rotate(225deg);
 }
 
+.tab .actions,
+.tab .actions-bg-1,
+.tab .actions-bg-2
+{
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 200px;
+	height: 100px;
+	background:#fdc4d4;
+	border-bottom-left-radius: 100px;
+	border-bottom-right-radius: 100px;
+	z-index: -1;
+	transform-origin: top center;
+	transition: 1s ease-in-out;
+}
+
+.tab .actions-bg-1 {
+	background: #ec87a1;
+	transition: 0.5s ease-in-out;
+	transition-delay: 0.5s;
+}
+
+.tab .actions-bg-2 {
+	background: #ffffff;
+	transition: 0.6s ease-in-out;
+	transition-delay: 0.4s;
+}
+
+.tab.active .actions,
+.tab.active .actions-bg-1,
+.tab.active .actions-bg-2 {
+	transform: translateX(-50%) rotate(180deg);
+}
+
+.tab.active .actions-bg-1,
+.tab.active .actions-bg-2 {
+	transition-delay: 0s;
+}
+
+.tab ul.action-ring {
+	position:absolute;
+	display: felx;
+	justify-content: center;
+	align-items: center;
+	inset: 0;
+}
+
+.tab ul.action-ring li{
+	list-style: none;
+	display: flex;
+	position: absolute;
+	cursor: pointer;
+}
+
+.tab ul.action-ring li img {
+	width: 5vw;
+	z-index: 100;
+	transform: rotate(180deg);
+	pointer-events: none;
+}
+
+.tab ul.action-ring li:nth-child(1) {
+	transform: translate(0px, -0px);
+}
+
+.tab ul.action-ring li:nth-child(2) {
+	transform: translate(50px, 15px);
+}
+
+.tab ul.action-ring li:nth-child(3) {
+	transform: translate(100px, -0px);
+}
+
+
 .tab ul.menu {
 	position: absolute;
 	inset: 0;
