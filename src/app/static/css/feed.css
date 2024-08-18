@@ -1,0 +1,65 @@
+.journey-summary {
+	border-radius: 10px;
+	width: 50%;
+	height: 25%;
+	background-color: white;
+	color: black;
+
+	cursor: pointer;
+
+	margin-bottom: 10%;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#feed-outer-container {
+	width: 80%;
+	height: 80%;
+	border-radius: 10px;
+
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#feed {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+
+	padding-top: 2%;
+
+	overflow-y: auto;
+
+}
+
+#start-journey-btn {
+	font-size: 2vh;
+}
+
+#feed-heading {
+	background: linear-gradient(to right, #93cdff, #74bcfc, #5ca9ec, #4ca0e9, #4794d8, #3179ee, #2072f7);;
+
+	border-radius: 10px;
+
+	color: #020e2b	;
+
+	padding-top: 1%;
+	padding-bottom: 1%;
+
+	padding-left: 5%;
+	padding-right: 5%;
+
+	margin-bottom: auto;
+
+	width: 50%;
+}

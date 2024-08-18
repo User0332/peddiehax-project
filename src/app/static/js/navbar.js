@@ -59,7 +59,7 @@ function tabBar() {
 
 	const toggle = document.createElement("div");
 	toggle.className = "toggle"
-	toggle.textContent = "+";
+	toggle.innerHTML = '<div class="toggle-inner">+</div>';
 
 	const menu = document.createElement("ul");
 	menu.className = "menu";
@@ -70,6 +70,7 @@ function tabBar() {
 	dashboard.href = "/dashboard";
 	const icon1 = document.createElement('img');
 	icon1.src = `/static/images/dashboard.svg`;
+	icon1.style = "transform: scale(0.5)";
 
 	dashboard.appendChild(icon1);
 	item1.appendChild(dashboard);
@@ -81,10 +82,13 @@ function tabBar() {
 	journey.href = "/my-journeys";
 	const icon2 = document.createElement('img');
 	icon2.src = `/static/images/My Journeys.svg`;
+	icon2.style = "transform: scale(0.5)";
 	
 	journey.appendChild(icon2);
 	item2.appendChild(journey);
 	menu.appendChild(item2);
+
+	menu.appendChild(toggle);
 
 	// Action Button (Leave Blank)
 	const item3 = document.createElement('li');
@@ -93,9 +97,11 @@ function tabBar() {
 	// Profile
 	const item4 = document.createElement('li');
 	const profile = document.createElement('a');
-	profile.href = "/profile";
+	profile.href = "/view-feed";
 	const icon4 = document.createElement('img');
-	icon4.src = `/static/images/Profile.svg`;
+	icon4.src = `/static/images/Feed.svg`;
+	icon4.style = "transform: scale(0.5)";
+
 
 	profile.appendChild(icon4);
 	item4.appendChild(profile);
@@ -114,6 +120,8 @@ function tabBar() {
 	logout.href = "";
 	const icon5 = document.createElement('img');
 	icon5.src = `/static/images/logout.svg`;
+	icon5.style = "transform: scale(0.5)";
+
 
 	logout.appendChild(icon5);
 	item5.appendChild(logout);
@@ -122,7 +130,7 @@ function tabBar() {
 
 
 	// Add all children to navbar
-	navbar.appendChild(toggle);
+	// navbar.appendChild(toggle);
 	navbar.appendChild(menu);
 
 	document.body.appendChild(navbar);

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Dashboard</title>
+
+		<script 
+			src="https://www.unpkg.com/@propelauth/javascript@2.0.11/dist/javascript.min.js" 
+			integrity="sha384-FENNH2f7QuQvkZJBL7jebLr0OtYKgTA2iq+C5g3VXXX7SBwWmeMMoc+pBBtcn76G" 
+			crossorigin="anonymous"></script>
+		<script src="/static/js/authuser.js"></script>
+		<script src="/static/js/api.js"></script>
+		<script src="/static/js/elemutils.js"></script>
+		<script src="/static/js/navbar.js" defer></script>
+		<script src="/static/js/actiontabs.js" defer></script>
+
+
+		<link rel="stylesheet" href="/static/css/theme.css"/>
+		<link rel="stylesheet" href="/static/css/feed.css"/>
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<script>
+				
+				execWithUserData(async (userData, authInfo) => { // main function for page
+					const wrapper = document.getElementById("wrapper");
+					
+					wrapper.prepend(
+						textElement("h1", `Hello, ${userData.username}!`)
+					)
+
+					const feed = await getFeed(authInfo);
+
+					const journeysContainer = document.getElementById("feed")
+
+					if (feed.length == 0) {
+						journeysContainer.appendChild(textElement("h1", "Feed Unavailable!"))
+					}
+
+					for (const journeyID of feed) // TODO: fix - doesn't work fro some reason
+					{
+						const journeyInfo = await getJourneyInfo(journeyID, authInfo);
+					
+						const journeyDiv = document.createElement("div");
+
+						journeyDiv.className = "journey-summary";
+
+						const anchor = document.createElement('a');
+
+						anchor.appendChild(textElement("h3", `${journeyInfo.name}`));
+						anchor.href = `/view-journey?id=${journeyID}`;
+						anchor.className = "anchor-btn light-anchor-style";
+
+						journeyDiv.appendChild(
+							anchor
+						);
+
+						journeyDiv.onclick = () => anchor.click();
+
+						if (journeyInfo.entries.length > 1)
+						{
+							const firstEntryID = journeyInfo.entries[0]
+							const lastEntryID = journeyInfo.entries[journeyInfo.entries.length-1]
+
+							const firstEntryInfo = await getEntryInfo(firstEntryID, authInfo);
+							const lastEntryInfo = await getEntryInfo(lastEntryID, authInfo);
+
+							journeyDiv.appendChild(
+								textElement('p', `From ${firstEntryInfo.name} to ${lastEntryInfo.name}`)
+							)
+						}
+						else
+						{
+							journeyDiv.appendChild(
+								textElement('p', "Your journey has just begun!")
+							)
+						}
+
+						journeysContainer.appendChild(journeyDiv)
+					}
+				})
+			</script>
+
+			<div id="feed-outer-container">
+				<h2 id="feed-heading">Your Feed</h2>
+				<div id="feed">
+
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

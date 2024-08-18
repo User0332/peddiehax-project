@@ -24,6 +24,7 @@ body {
 	background-image: linear-gradient(to right, #ffe9c4, #0b9fdd);
 	font-family: Roboto, system-ui;
 	display: flex;
+	flex-direction: column;
 }
 
 #wrapper {
@@ -35,6 +36,7 @@ body {
 	flex-direction: column;
 	align-items: center;
 	text-align: center;
+	flex: 1;
 }
 
 .anchor-btn {
@@ -93,9 +95,9 @@ body {
 	justify-content: space-between;
 	align-items: center;
 	padding-bottom: 1vh;
-	/* position: absolute;
+	position: absolute;
 	bottom: 20px;
-	left: 10px; */
+	left: 10px;
 	right: 10px;
 	border-radius: 25px;
 
@@ -125,38 +127,42 @@ body {
 /* Dynamic Tab Nav Bar Menu */
 .tab {
 	width:100vw;
-	height: 80px;
+	height: 100px;
 	z-index: 1;
 	user-select: none;
 	position: fixed;
 	bottom: 0;
 	display: flex;
 	justify-content: space-around;
-
 }
 
 .tab .toggle {
 	position: absolute;
-	/* top: -50px; */
+	top: 0;
 	left: 50%;
-	transform: translateX(-50%);
+	transform: translate(-50%, 10%);
 	width: 80px;
 	height: 80px;
 	background: #351233;
-	z-index: 1;
 	border-radius: 50%;
 	cursor: pointer;
 	display: flex;
 	justify-content: center;
-	align-items:end;
+	align-items: center;
 	color: #ffffff;
 	font-size: 4.5em;
 	transition: 1s ease-in-out;
 	text-align: center;
 }
 
+.tab .toggle .toggle-inner {
+	margin: 0;
+	padding: 0;
+	transform: translateY(-10%);
+}
+
 .tab.active .toggle {
-	transform: translateX(-50%) rotate(225deg);
+	transform: translate(-50%, 10%) rotate(225deg);
 }
 
 .tab .actions,
@@ -176,15 +182,19 @@ body {
 	transition: 1s ease-in-out;
 }
 
+.tab .actions {
+	background: transparent;
+}
+
 .tab .actions-bg-1 {
 	background: #ec87a1;
-	transition: 0.5s ease-in-out;
+	transition: 0.5s ease-in-out, opacity 2s ease-out;
 	transition-delay: 0.5s;
 }
 
 .tab .actions-bg-2 {
 	background: #ffffff;
-	transition: 0.6s ease-in-out;
+	transition: 0.6s ease-in-out, opacity 2s ease-out;
 	transition-delay: 0.4s;
 }
 
@@ -197,46 +207,52 @@ body {
 .tab.active .actions-bg-1,
 .tab.active .actions-bg-2 {
 	transition-delay: 0s;
+	opacity: 0;
 }
 
+
 .tab ul.action-ring {
-	position:absolute;
-	display: felx;
+	display: flex;
+	flex-direction: row;
 	justify-content: center;
 	align-items: center;
-	inset: 0;
+	width: 400px;
+	transform: translateX(-25%);
+	margin: 0;
+	padding: 0;
 }
 
 .tab ul.action-ring li{
 	list-style: none;
 	display: flex;
-	position: absolute;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 	cursor: pointer;
+	/* transform: translateX(-25%); */
 }
 
 .tab ul.action-ring li img {
 	width: 5vw;
-	z-index: 100;
 	transform: rotate(180deg);
 	pointer-events: none;
 }
 
 .tab ul.action-ring li:nth-child(1) {
-	transform: translate(0px, -0px);
+	transform: translate(-20px, -0px);
 }
 
 .tab ul.action-ring li:nth-child(2) {
-	transform: translate(50px, 15px);
+	transform: translate(0px, 15px);
 }
 
 .tab ul.action-ring li:nth-child(3) {
-	transform: translate(100px, -0px);
+	transform: translate(20px, -0px);
 }
 
 
 .tab ul.menu {
-	position: absolute;
-	inset: 0;
+	/* inset: 0; */
 	background: white;
 	border-radius: 10px;
 	display: flex;
@@ -244,6 +260,10 @@ body {
 	align-items: center;
 	gap:55px;
 	box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	vertical-align: middle;
 }
 
 .tab ul.menu li {
@@ -360,4 +380,9 @@ body {
 	max-height: 100%;
 
 	margin: 0 auto;
+}
+
+.tab-icon {
+	max-width: 700px;
+	max-height: 700px;
 }

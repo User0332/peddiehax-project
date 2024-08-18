@@ -14,16 +14,16 @@ actionRing.className = "action-ring";
 
 // Example Actions -- NEEDS FUNCTIONALITY -- JUST LOOKS PRETTY RN
 
-const icons = [
-   "add-person",
-    "add-text",
-    "add-location"
-]
+const icons = {
+   "add-person": "/profile",
+    "add-text": "",
+    "add-location": "/new-journey"
+}
 
-for (const imgfile of icons) {
+for (const [imgfile, href] of Object.entries(icons)) {
     const action = document.createElement('li');
     const anchor = document.createElement('a');
-    anchor.href = "";
+    anchor.href = href;
     const img = document.createElement('img');
     img.src = `/static/images/${imgfile}.svg`;
     anchor.appendChild(img);

@@ -222,6 +222,15 @@ def getphoto():
 @app.route("/api/addentry", methods=["POST"])
 @auth.require_user
 def addentry():
+	journey: Journey = db.session.execute(
+		db.select(Journey).where(Journey.id == request.form.get("journey", ''))
+	).scalar()
+
+	if (
+		(not journey) or # we must use an or and two nots so that we do not raise AttributeError from using a null value
+		(not journey.owner_id == current_user.user_id)
+	): return Response(status=400) # 400 bad req
+
 	try:
 		entry = TripEntry(
 			id=genid.genid(),
@@ -231,11 +240,13 @@ def addentry():
 			description=request.form["description"],
 			rating=int(request.form["rating"]),
 			added_at=datetime.datetime.now(),
-			parent_journey=request.form["journey"],
+			parent_journey=journey.id,
 			owner_id=current_user.user_id,
 			images=""
 		)
 	except (KeyError, ValueError): return Response(status=400) # 400 bad req
+
+	entry.is_public = journey.is_public
 
 	db.session.add(entry)
 
@@ -244,21 +255,13 @@ def addentry():
 			id=genid.genid(),
 			data=file.stream.read(),
 			owner_id=current_user.user_id,
-			ftype=file.filename.split('.')[-1]
+			ftype=file.filename.split('.')[-1],
+			is_public=entry.is_public
 		)
 
 		entry.images+=f"{img.id},"
 
 		db.session.add(img)
-
-	journey: Journey = db.session.execute(
-		db.select(Journey).where(Journey.id == request.form["journey"])
-	).scalar()
-
-	if (
-		(not journey) or # we must use an or and two nots so that we do not raise AttributeError from using a null value
-		(not journey.accessible_to_current_user)
-	): return Response(status=400) # 400 bad req
 
 
 	journey.entries+=f"{entry.id},"
@@ -271,13 +274,15 @@ def addentry():
 @auth.require_user
 def createjourney():
 	name = request.args.get("name")
+	is_public = request.args.get("public").lower() == "true"
 
 	if not name: return jsonify(None)
 
 	journey = Journey(
 		id=genid.genid(),
 		name=name,
-		owner_id=current_user.user_id
+		owner_id=current_user.user_id,
+		is_public=is_public
 	)
 
 	db.session.add(journey)
