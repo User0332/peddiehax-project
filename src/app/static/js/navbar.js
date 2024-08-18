@@ -2,8 +2,10 @@
 
 function loadNavbar() {
 	const navbar = document.createElement("div");
-	navbar.id = "navbar";
-	navbar.appendChild(document.createElement("div")) // for spacing
+	navbar.classList.add("mobile-nav");
+	const header = document.createElement("div");
+	header.classList.add("header")
+	navbar.appendChild(header) // for spacing
 
 	const pages = {
 		"Dashboard": "/dashboard",
@@ -15,7 +17,12 @@ function loadNavbar() {
 		const anchor = document.createElement('a');
 		anchor.href = href;
 		anchor.textContent = page;
-		anchor.className = "anchor-btn navbar-btn";
+		// anchor.className = "anchor-btn navbar-btn";
+		anchor.className = "bloc-icon";
+
+		const img = document.createElement('img');
+		img.src = `/static/images/${page}.svg`;
+		anchor.appendChild(img);
 
 		navbar.appendChild(anchor);
 	}
@@ -24,6 +31,10 @@ function loadNavbar() {
 	logout.href = "";
 	logout.className = "anchor-btn navbar-btn";
 	logout.textContent = "Logout";
+
+	const img = document.createElement('img');
+	img.src = `/static/images/logout.svg`;
+	logout.appendChild(img);
 
 	logout.onclick = () => {
 		authClient.logout().then(
