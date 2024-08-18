@@ -91,7 +91,7 @@ body {
 	background: #F1F1F1;
 	position: fixed;
 	bottom: 0;
-	height: 10%;
+	height: 10vh;
 	width: 100%;
 	display: flex;
 	justify-content: space-around;
@@ -104,7 +104,7 @@ body {
 }
 
 .bloc-icon img {
-	width: 30px;
+	width: 15vw;
 }
 
 /* @media screen and (min-width: 600px) {
