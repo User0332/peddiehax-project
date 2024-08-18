@@ -26,7 +26,7 @@
 				execWithUserData(async (userData, authInfo) => { // main function for page
 					const wrapper = document.getElementById("wrapper");
 
-					const userName = textElement("h2", `aka @${userData.username}`);
+					const userName = textElement("h2", `Linked account: @${authInfo.user.firstName}`);
 
 					const stats = document.createElement("div");
 
@@ -42,7 +42,7 @@
 					}
 
 					wrapper.prepend(
-						textElement("h1", `Hello, ${authInfo.user.firstName}!`),
+						textElement("h1", `Hello, ${userData.username}!`),
 						userName,
 						stats
 					);

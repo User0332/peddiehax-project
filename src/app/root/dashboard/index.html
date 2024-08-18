@@ -22,16 +22,17 @@
 	<body>
 		<div id="wrapper">
 			<script>
+				
 				execWithUserData(async (userData, authInfo) => { // main function for page
+					const recentJourneys = (await listJourneys(authInfo)).splice(-3).reverse();
 					const wrapper = document.getElementById("wrapper");
 					
 					wrapper.prepend(
-						textElement("h1", `Hello, ${authInfo.user.firstName}!`)
+						textElement("h1", `Hello, ${userData.username}!`)
 					)
 
 					const journeysContainer = document.getElementById("my-journeys")
 
-					const recentJourneys = (await listJourneys(authInfo)).splice(-3).reverse();
 
 					if (recentJourneys.length == 0) {
 						journeysContainer.appendChild(textElement("h1", "No Current Journeys!"))
@@ -92,5 +93,5 @@
 		</div>
 	</body>
 	</div>
-	<a href="/new-journey" class="journey" id="start-journey-btn">Start a New Journey &#x2192;</a>
+	
 </html>

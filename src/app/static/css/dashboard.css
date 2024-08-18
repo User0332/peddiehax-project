@@ -20,7 +20,7 @@
 	width: 80%;
 	height: 80%;
 	border-radius: 10px;
-	background-color: white;
+
 
 	display: flex;
 	flex-direction: column;
@@ -40,7 +40,6 @@
 
 	overflow-y: auto;
 
-	background-color: white;
 }
 
 #start-journey-btn {
@@ -52,7 +51,7 @@
 
 	border-radius: 10px;
 
-	color: white;
+	color: #020e2b	;
 
 	padding-top: 1%;
 	padding-bottom: 1%;

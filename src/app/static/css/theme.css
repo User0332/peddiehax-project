@@ -3,7 +3,8 @@
 	--light-grey: #edf0f1;
 	--violet: #655be1;
 	--dark-violet: #5146e1;
-	--black: #21232a;
+	--black: #020e2b
+	;
   }
 
 * {
@@ -20,7 +21,7 @@ html, body {
 }
 
 body {
-	background-color: #fee1b7;
+	background-image: linear-gradient(to right, #ffe9c4, #0b9fdd);
 	font-family: Roboto, system-ui;
 	display: flex;
 }
@@ -118,7 +119,7 @@ body {
 }
 
 .bloc-icon img {
-	width: 12vw;
+	width: 8vh;
 }
 
 /* Dynamic Tab Nav Bar Menu */
@@ -136,7 +137,7 @@ body {
 
 .tab .toggle {
 	position: absolute;
-	top: -50px;
+	/* top: -50px; */
 	left: 50%;
 	transform: translateX(-50%);
 	width: 80px;
