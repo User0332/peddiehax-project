@@ -1,12 +1,25 @@
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
 }
 
 body {
-	background-color: #DCEDFF;
+	background-color: #fee1b7;
+	font-family: Roboto, system-ui;
+	display: flex;
+}
+
+#wrapper {
+	margin: 0 auto;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	/* justify-content: center; */
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
 }
 
 .anchor-btn {
@@ -101,15 +114,27 @@ body {
 } */
 
 .light-anchor-style {
-	color: white;
+	color: #74bcfc;
 }
 
 .light-anchor-style::after {
-	background-color: #dfd8f6;
+	background-color: #3179ee;
 }
 
 .light-anchor-style:hover {
-	color: #dfd8f6;
+	color: #3179ee;
+}
+
+.blue-btn {
+	background-color: #3179ee;
+}
+
+.blue-btn:hover {
+	background-color: #2266d3;
+}
+
+.blue-btn:disabled {
+	background-color: gray;
 }
 
 /* CSS */

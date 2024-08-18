@@ -11,7 +11,7 @@
 		<script src="/static/js/authuser.js"></script>
 		<script src="/static/js/api.js"></script>
 		<script src="/static/js/elemutils.js"></script>
-		<script src="/static/js/navbar.js" defer></script>
+		<!-- <script src="/static/js/navbar.js" defer></script> -->
 
 
 		<link rel="stylesheet" href="/static/css/theme.css"/>
@@ -22,13 +22,19 @@
 		<div id="wrapper">
 			<script>
 				execWithUserData(async (userData, authInfo) => { // main function for page
-					document.body.prepend(
+					const wrapper = document.getElementById("wrapper");
+					
+					wrapper.prepend(
 						textElement("h1", `Hello, ${authInfo.user.firstName}!`)
 					)
 
-					const journeysContainer = document.getElementById("myJourneys")
+					const journeysContainer = document.getElementById("my-journeys")
 
 					const recentJourneys = (await listJourneys(authInfo)).splice(-3).reverse();
+
+					if (recentJourneys.length == 0) {
+						journeysContainer.appendChild(textElement("h1", "No Current Journeys!"))
+					}
 
 					for (const journeyID of recentJourneys) // TODO: fix - doesn't work fro some reason
 					{
@@ -41,9 +47,7 @@
 
 						const anchor = document.createElement('a');
 
-
-
-						anchor.appendChild(textElement("h3", journeyInfo.name));
+						anchor.appendChild(textElement("h3", `${journeyInfo.name}`));
 						anchor.href = `/view-journey?id=${journeyID}`;
 						anchor.className = "anchor-btn light-anchor-style";
 
@@ -52,7 +56,6 @@
 						);
 
 						journeyDiv.onclick = () => anchor.click();
-
 
 						if (journeyInfo.entries.length > 1)
 						{
@@ -78,9 +81,11 @@
 				})
 			</script>
 
-			<div id="myJourneys">
-				<h2>Recent Journeys</h2>
+			<div id="journey-outer-container">
+				<h2 id="dashboard-heading">Recent Journeys</h2>
+				<div id="my-journeys">
 
+				</div>
 			</div>
 			<a href="/new-journey" class="anchor-btn" id="start-journey-btn">Start a New Journey &#x2192;</a>
 		</div>

@@ -28,13 +28,15 @@
 				execWithUserData(async (userData, authInfo) => { // main function for page
 					globalAuthInfo = authInfo;
 
+					const wrapper = document.getElementById("wrapper");
+
 					const entryInfo = await getEntryInfo(entryID, authInfo)
 				
 					const greeting = document.createElement("h1")
 
 					greeting.textContent = `Hey, ${authInfo.user.firstName}`;
 
-					document.body.prepend(
+					wrapper.prepend(
 						greeting
 					);
 
