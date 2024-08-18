@@ -81,4 +81,13 @@ function tabBar() {
 	document.body.appendChild(navbar);
 }
 
+function header() {
+	const header = document.createElement("header");
+	header.textContent = "myJourneys"
+	header.className = "header";
+
+	document.body.prepend(header);
+}
+
 tabBar();
+// header();

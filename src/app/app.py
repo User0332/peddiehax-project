@@ -247,6 +247,8 @@ def addentry():
 		)
 	except (KeyError, ValueError): return Response(status=400) # 400 bad req
 
+	print(request.form["people"])
+
 	entry.is_public = journey.is_public
 
 	db.session.add(entry)

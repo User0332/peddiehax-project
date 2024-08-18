@@ -93,14 +93,15 @@
 						return;
 					}
 
+					const peopleElements = document.querySelectorAll("#personContainer > div > input");
+
 					let peopleString = "";
 
-					for (const element of document.getElementById("personContainer").children) {
+					for (const element of peopleElements) {
 						if (element.value) {
 							peopleString+=`${element.value},`
 						}
 					}
-
 					const files = document.getElementById("image-input").files;
 
 					const formData = new FormData();

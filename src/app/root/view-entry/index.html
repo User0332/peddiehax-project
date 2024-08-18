@@ -30,20 +30,25 @@
 					globalAuthInfo = authInfo;
 
 					const wrapper = document.getElementById("wrapper");
+					const entryContainer = document.getElementById("entry-container");
 
 					const entryInfo = await getEntryInfo(entryID, authInfo)
-				
-					const greeting = document.createElement("h1")
+					const journeyName = await getJourneyInfo(entryInfo.journey, authInfo).name;
 
-					greeting.textContent = `Hey, ${authInfo.user.firstName}`;
+					console.log(entryInfo);
 
-					wrapper.prepend(
-						greeting
-					);
+					const header = document.createElement("h2");
+					header.textContent = `Your Experience At: ${entryInfo.name}`;
+					entryContainer.append(header);
 
 					const imagesContainer = document.getElementById("images-container");
+
+					if (entryInfo.people.length > 0) {
+						entryContainer.append(textElement("h3", `With ${entryInfo.people.join(',')}`));
+					}
 					
 					for (const imgID of entryInfo.images) {
+						console.log("hello")
 						const img = document.createElement("img");
 
 						img.src = await getBase64ImageData(imgID, authInfo)

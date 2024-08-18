@@ -292,6 +292,14 @@ body {
 
 }
 
+.header {
+	padding: 30px;
+	text-align: left;
+	background: #020e2b;
+	color: white;
+	font-size: 30px;
+  }
+
 /* @media screen and (min-width: 600px) {
 	.mobile-nav {
 	display: none;
